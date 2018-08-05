@@ -9,11 +9,12 @@
 # Some documentation:
 # Bug with "patchset v1": https://bugs.winehq.org/show_bug.cgi?id=45327
 # Bug with "Version 8.15 fix": https://bugs.winehq.org/show_bug.cgi?id=45550
+# Bug with ntdll-futex problems: https://bugs.winehq.org/show_bug.cgi?id=45558
 
 pkgname=wine-staging-lol
 pkgver=3.13
 _wsgitver=1de1a96f1e0dca5d012c807b4719b2f03b5f71c9
-pkgrel=2
+pkgrel=3
 
 _pkgbasever=${pkgver/rc/-rc}
 
@@ -21,6 +22,7 @@ source=(https://dl.winehq.org/wine/source/3.x/wine-$_pkgbasever.tar.xz{,.sign}
         "wine-staging-g$_wsgitver.tar.gz::https://github.com/wine-staging/wine-staging/archive/$_wsgitver.tar.gz"
         "wine-staging-lol-patchset-v1.zip::https://bugs.winehq.org/attachment.cgi?id=61944"
         "wine-staging-lol-8.15-crash-fix.diff::https://bugs.winehq.org/attachment.cgi?id=61968"
+        "wine-staging-back-out-ntdll-futex-condition-var.diff"
         harmony-fix.diff
         30-win32-aliases.conf
         wine-binfmt.conf)
@@ -29,6 +31,7 @@ sha512sums=('a07a3d2a19261f9251f165ca4c14871e6ebda4d3f99da16f9fc41f06e80cae3fb50
             'e477dd6d152f6f2802dd041427be1a7407616d69c7d9e9d6397bac7498ac3473d15e468750996e4796dac17c87be585be607fff91d7fc49313e4b9adcfd25488'
             '45e29d664787c5a820902f99daef63c78f07c8c01c19ac9e9e720e471322571e46792db2d073d3a461c7f48df71c383065a366a8b746629a5c6f70b215cddac6'
             'd53304d7352480fa66d116f9c38cab58e502bf0e4a65f375cea603301e88027308dbe734768460f212f44dba4979db0ff6871a6dccfa9fe032cd67264acdbd25'
+            '526506092178fbeae16b6a0c2838a188a5451987f86e2bb8b2cd8e56a2a925164389f88361858747dcd7c32cec73161e5a88a9a8d51dba68b64db73d21207cdc'
             'b86edf07bfc560f403fdfd5a71f97930ee2a4c3f76c92cc1a0dbb2e107be9db3bed3a727a0430d8a049583c63dd11f5d4567fb7aa69b193997c6da241acc4f2e'
             '6e54ece7ec7022b3c9d94ad64bdf1017338da16c618966e8baf398e6f18f80f7b0576edf1d1da47ed77b96d577e4cbb2bb0156b0b11c183a0accf22654b0a2bb'
             'bdde7ae015d8a98ba55e84b86dc05aca1d4f8de85be7e4bd6187054bfe4ac83b5a20538945b63fb073caab78022141e9545685e4e3698c97ff173cf30859e285')
@@ -122,6 +125,9 @@ prepare() {
   # Allow ccache to work
   mv wine-$_pkgbasever $pkgname
 
+  # LOL Patches wine-staging
+  patch -d wine-staging-$_wsgitver -p1 -i "$srcdir/wine-staging-back-out-ntdll-futex-condition-var.diff"
+
   # apply wine-staging patchset
   pushd wine-staging-$_wsgitver/patches
   ./patchinstall.sh DESTDIR="$srcdir/$pkgname" --all
@@ -133,7 +139,7 @@ prepare() {
 
   patch -d $pkgname -Np1 < harmony-fix.diff
 
-  # LOL Patches
+  # LOL Patches wine (after wine-staging patching)
   patch -d $pkgname -p1 -i "$srcdir/0003-Pretend-to-have-a-wow64-dll.patch"
   patch -d $pkgname -p1 -i "$srcdir/0006-Refactor-LdrInitializeThunk.patch"
   patch -d $pkgname -p1 -i "$srcdir/0007-Refactor-RtlCreateUserThread-into-NtCreateThreadEx.patch"
