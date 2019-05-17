@@ -1,0 +1,31 @@
+pkgbase = wine-lol-glibc
+	pkgdesc = GNU C Library patched for wine-lol
+	pkgver = 2.29
+	pkgrel = 1
+	url = https://www.gnu.org/software/libc
+	arch = x86_64
+	license = GPL
+	license = LGPL
+	makedepends = git
+	makedepends = gd
+	makedepends = lib32-gcc-libs
+	makedepends = python
+	depends = linux-api-headers>=4.10
+	depends = tzdata
+	depends = filesystem
+	optdepends = gd: for memusagestat
+	options = !strip
+	options = staticlibs
+	source = https://ftp.gnu.org/gnu/glibc/glibc-2.29.tar.xz
+	source = bz20338.patch
+	source = 0001-Revert-elf-Correct-absolute-SHN_ABS-symbol-run-time-.patch
+	source = file-truncated-while-reading-soname-after-patchelf.patch
+	source = wine-lol-poc1-glibc.diff::https://bugs.winehq.org/attachment.cgi?id=64482
+	md5sums = e6c279d5b2f0736f740216f152acf974
+	md5sums = dc0d3ad59aeaaf591b085a77de6e03e9
+	md5sums = af5d3c5227ac639effe39667a43879a1
+	md5sums = 0820504d2e83ee15f74a656771361872
+	md5sums = 65e6d204ab9ad787c8dce999c4ba5c17
+
+pkgname = wine-lol-glibc
+
