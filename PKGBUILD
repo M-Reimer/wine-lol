@@ -1,37 +1,33 @@
-# $Id$
+# -*- mode: shell-script -*-
+# Maintainer: Manuel Reimer <mail+wine@m-reimer.de>
 # Maintainer: Felix Yan <felixonmars@archlinux.org>
 # Contributor: Sven-Hendrik Haase <sh@lutzhaase.com>
 # Contributor: Jan "heftig" Steffens <jan.steffens@gmail.com>
 # Contributor: Eduardo Romero <eduardo@archlinux.org>
 # Contributor: Giovanni Scafora <giovanni@archlinux.org>
-# Contributor: Manuel Reimer <manuel.reimer@gmx.de>
 
-# This PKGBUILD actually creates a build of wine-staging 3.14
-# No additional patches are applied!
-# Serves me as temporary solution until Arch Linux updates wine-staging
+# Contains a fix to make League Of Legends work. This fix requires a "hacked"
+# glibc to be used. This has to be built separately (wine-lol-glibc on AUR).
+# See: https://bugs.winehq.org/show_bug.cgi?id=47198#c16
 
-pkgname=wine-staging-lol
-pkgver=3.14
-_winever=3.14
+pkgname=wine-lol
+pkgver=4.8
 pkgrel=1
 
 _pkgbasever=${pkgver/rc/-rc}
 
-source=(https://dl.winehq.org/wine/source/3.x/wine-$_winever.tar.xz{,.sign}
+source=(https://dl.winehq.org/wine/source/4.x/wine-$_pkgbasever.tar.xz
         "wine-staging-v$_pkgbasever.tar.gz::https://github.com/wine-staging/wine-staging/archive/v$_pkgbasever.tar.gz"
-        harmony-fix.diff
         30-win32-aliases.conf
-        wine-binfmt.conf)
-sha512sums=('50dbbf8a832abfa01247b9d170c6e1fe4f722cc8868659512df7bc17efd7e9d618db10283baf1eda0f1e4abbcdd130be16dbdb8d5a91b155c2c441e50e2b43f1'
-            'SKIP'
-            'f998baac6be3fece1ae6d4e924f883befea43f849d678c987e9fe4d102cf22fde7b4a0fa728294c46d70c7d29caa037022fb9e33ce4b4fac0e49c94d25cdfa66'
-            'b86edf07bfc560f403fdfd5a71f97930ee2a4c3f76c92cc1a0dbb2e107be9db3bed3a727a0430d8a049583c63dd11f5d4567fb7aa69b193997c6da241acc4f2e'
+        wine-binfmt.conf
+        wine-lol–poc1-wine.diff::https://bugs.winehq.org/attachment.cgi?id=64481)
+sha512sums=('ad91c31aad86b9932777a1c5a84760f41c63cfbb5d79f1a8afd132a8948667283f85e081a454cfc0904544394eaabb00fb986eba15efd8a8409db38e793f3dab'
+            'f2e7fbe1ed0f77bd307185d0f7aa9e837e64f86ae98828db25e05c998ec07a9dd57dc9f3e6b093310c95ff2a517825d36420d7bd9fc9028d11bc29321ac3559e'
             '6e54ece7ec7022b3c9d94ad64bdf1017338da16c618966e8baf398e6f18f80f7b0576edf1d1da47ed77b96d577e4cbb2bb0156b0b11c183a0accf22654b0a2bb'
-            'bdde7ae015d8a98ba55e84b86dc05aca1d4f8de85be7e4bd6187054bfe4ac83b5a20538945b63fb073caab78022141e9545685e4e3698c97ff173cf30859e285')
-validpgpkeys=(5AC1A08B03BD7A313E0A955AF5E6E9EEB9461DD7
-              DA23579A74D4AD9AF9D3F945CEFAC8EAAF17519D)
+            'bdde7ae015d8a98ba55e84b86dc05aca1d4f8de85be7e4bd6187054bfe4ac83b5a20538945b63fb073caab78022141e9545685e4e3698c97ff173cf30859e285'
+            'ed9c36aee756ee8fba0b08a3ff895893df1c771077964cbe5ce1a23f66addf7212c8ca8e601cf14e5dae82af4b275d0a11c7207acd7dc4f48fdb1216d819f9dd')
 
-pkgdesc="A compatibility layer for running Windows programs - Staging branch"
+pkgdesc="A compatibility layer for running Windows programs - Staging branch with League Of Legends fixes"
 url="http://www.wine-staging.com"
 arch=(x86_64)
 options=(staticlibs)
@@ -53,6 +49,7 @@ depends=(
   gcc-libs         lib32-gcc-libs
   libpcap          lib32-libpcap
   desktop-file-utils
+  wine-lol-glibc
 )
 
 makedepends=(autoconf ncurses bison perl fontforge flex
@@ -80,6 +77,11 @@ makedepends=(autoconf ncurses bison perl fontforge flex
   gst-plugins-base-libs lib32-gst-plugins-base-libs
   vulkan-icd-loader     lib32-vulkan-icd-loader
   sdl2                  lib32-sdl2
+  vkd3d                 lib32-vkd3d
+  sane
+  libgphoto2
+  gsm
+  ffmpeg
   samba
   opencl-headers
 )
@@ -106,28 +108,36 @@ optdepends=(
   gst-plugins-base-libs lib32-gst-plugins-base-libs
   vulkan-icd-loader     lib32-vulkan-icd-loader
   sdl2                  lib32-sdl2
+  vkd3d                 lib32-vkd3d
+  sane
+  libgphoto2
+  gsm
+  ffmpeg
   cups
   samba           dosbox
 )
 
 provides=("wine=$pkgver" "wine-wow64=$pkgver")
-conflicts=('wine' 'wine-wow64')
+conflicts=('wine' 'wine-wow64' 'wine-staging')
 install=wine.install
 
 prepare() {
   # Allow ccache to work
-  mv wine-$_winever $pkgname
+  mv wine-$_pkgbasever $pkgname
 
   # apply wine-staging patchset
   pushd wine-staging-$_pkgbasever/patches
   ./patchinstall.sh DESTDIR="$srcdir/$pkgname" --all
   popd
 
+  # Apply League Of Legends fix
+  pushd "$srcdir/$pkgname"
+  patch -p1 -i "$srcdir/wine-lol–poc1-wine.diff"
+  popd
+
   # https://bugs.winehq.org/show_bug.cgi?id=43530
   export CFLAGS="${CFLAGS/-fno-plt/}"
   export LDFLAGS="${LDFLAGS/,-z,now/}"
-
-  patch -d $pkgname -Np1 < harmony-fix.diff
 
   sed 's|OpenCL/opencl.h|CL/opencl.h|g' -i $pkgname/configure*
 
@@ -138,6 +148,10 @@ prepare() {
 
 build() {
   cd "$srcdir"
+
+  # Prepare "rpath" to link against wine-lol-glibc, export it via LDFLAGS
+  _RPATH="-rpath=/usr/wine-lol-glibc/lib,-rpath=/usr/wine-lol-glibc/lib32"
+  export LDFLAGS="$LDFLAGS,$_RPATH"
 
   msg2 "Building Wine-64..."
 
@@ -150,12 +164,14 @@ build() {
     --enable-win64 \
     --with-xattr
 
+  make depend LDRPATH_INSTALL="-Wl,$_RPATH" # Use wine-lib-glibc for -install
   make
 
   msg2 "Building Wine-32..."
 
   export PKG_CONFIG_PATH="/usr/lib32/pkgconfig"
   cd "$srcdir/$pkgname-32-build"
+
   ../$pkgname/configure \
     --prefix=/usr \
     --with-x \
@@ -164,6 +180,7 @@ build() {
     --libdir=/usr/lib32 \
     --with-wine64="$srcdir/$pkgname-64-build"
 
+  make depend LDRPATH_INSTALL="-Wl,$_RPATH" # Use wine-lib-glibc for -install
   make
 }
 
