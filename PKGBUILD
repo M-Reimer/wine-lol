@@ -6,13 +6,15 @@
 # Contributor: Eduardo Romero <eduardo@archlinux.org>
 # Contributor: Giovanni Scafora <giovanni@archlinux.org>
 
-# Contains a fix to make League Of Legends work. This fix requires a "hacked"
-# glibc to be used. This has to be built separately (wine-lol-glibc on AUR).
-# See: https://bugs.winehq.org/show_bug.cgi?id=47198#c16
+# Contains fixes to make League Of Legends work.
+# One fix requires a "hacked" glibc (wine-lol-glibc on AUR).
+# Some history:
+# Primary bug report: https://bugs.winehq.org/show_bug.cgi?id=47198
+# Additional crash fix: https://bugs.winehq.org/show_bug.cgi?id=45667#c5
 
 pkgname=wine-lol
 pkgver=4.8
-pkgrel=2
+pkgrel=3
 
 _pkgbasever=${pkgver/rc/-rc}
 
@@ -20,12 +22,14 @@ source=(https://dl.winehq.org/wine/source/4.x/wine-$_pkgbasever.tar.xz
         "wine-staging-v$_pkgbasever.tar.gz::https://github.com/wine-staging/wine-staging/archive/v$_pkgbasever.tar.gz"
         30-win32-aliases.conf
         wine-binfmt.conf
-        wine-lol–poc1-wine.diff::https://bugs.winehq.org/attachment.cgi?id=64481)
+        wine-lol–poc1-wine.diff::https://bugs.winehq.org/attachment.cgi?id=64481
+        wine-lol-patch-stub.diff::https://bugs.winehq.org/attachment.cgi?id=64496)
 sha512sums=('ad91c31aad86b9932777a1c5a84760f41c63cfbb5d79f1a8afd132a8948667283f85e081a454cfc0904544394eaabb00fb986eba15efd8a8409db38e793f3dab'
             'f2e7fbe1ed0f77bd307185d0f7aa9e837e64f86ae98828db25e05c998ec07a9dd57dc9f3e6b093310c95ff2a517825d36420d7bd9fc9028d11bc29321ac3559e'
             '6e54ece7ec7022b3c9d94ad64bdf1017338da16c618966e8baf398e6f18f80f7b0576edf1d1da47ed77b96d577e4cbb2bb0156b0b11c183a0accf22654b0a2bb'
             'bdde7ae015d8a98ba55e84b86dc05aca1d4f8de85be7e4bd6187054bfe4ac83b5a20538945b63fb073caab78022141e9545685e4e3698c97ff173cf30859e285'
-            'ed9c36aee756ee8fba0b08a3ff895893df1c771077964cbe5ce1a23f66addf7212c8ca8e601cf14e5dae82af4b275d0a11c7207acd7dc4f48fdb1216d819f9dd')
+            'ed9c36aee756ee8fba0b08a3ff895893df1c771077964cbe5ce1a23f66addf7212c8ca8e601cf14e5dae82af4b275d0a11c7207acd7dc4f48fdb1216d819f9dd'
+            '159b075f11607114ee81ef801c77969c7b630b024a8a698b5f20a208f2cf780a2109f055d420e4292b774f3e5524a05b4c05d446d5217f1c050adb12b7409e45')
 
 pkgdesc="A compatibility layer for running Windows programs - Staging branch with League Of Legends fixes"
 url="http://www.wine-staging.com"
@@ -130,9 +134,10 @@ prepare() {
   ./patchinstall.sh DESTDIR="$srcdir/$pkgname" --all
   popd
 
-  # Apply League Of Legends fix
+  # Apply League Of Legends fixes
   pushd "$srcdir/$pkgname"
   patch -p1 -i "$srcdir/wine-lol–poc1-wine.diff"
+  patch -p1 -i "$srcdir/wine-lol-patch-stub.diff"
   popd
 
   # https://bugs.winehq.org/show_bug.cgi?id=43530
