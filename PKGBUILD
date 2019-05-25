@@ -14,7 +14,7 @@
 
 pkgname=wine-lol
 pkgver=4.8
-pkgrel=4
+pkgrel=5
 
 _pkgbasever=${pkgver/rc/-rc}
 
@@ -150,10 +150,10 @@ prepare() {
 build() {
   cd "$srcdir"
 
-  # We need RPATH to include wine-lol-glibc and our custom wine-lib setup path
-  _RPATH="-rpath=/usr/wine-lol-glibc/lib32,-rpath=/opt/wine-lol/lib32"
+  # We need RPATH to point to the "lib32" in our prefix
+  _RPATH="-rpath=/opt/wine-lol/lib32"
   # Dyamic linker has to be the one in wine-lol-glibc
-  _LINKER="-dynamic-linker=/usr/wine-lol-glibc/lib32/ld-linux.so.2"
+  _LINKER="-dynamic-linker=/opt/wine-lol/lib32/ld-linux.so.2"
   # Export all this via LDFLAGS
   export LDFLAGS="$LDFLAGS,$_RPATH,$_LINKER"
 
