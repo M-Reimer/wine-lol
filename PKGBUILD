@@ -8,7 +8,7 @@
 pkgname=wine-lol-glibc
 pkgdesc='GNU C Library patched for wine-lol'
 pkgver=2.29
-pkgrel=1
+pkgrel=2
 arch=(x86_64)
 url='https://www.gnu.org/software/libc'
 license=(GPL LGPL)
@@ -50,7 +50,7 @@ prepare() {
 
 build() {
   local _configure_flags=(
-      --prefix=/usr/wine-lol-glibc
+      --prefix=/opt/wine-lol
       --sysconfdir=/etc
       --datarootdir=/usr/share
       --with-headers=/usr/include
@@ -66,41 +66,14 @@ build() {
       --disable-werror
   )
 
-  cd "$srcdir/glibc-build"
-
-  echo "slibdir=/usr/wine-lol-glibc/lib" >> configparms
-  echo "rtlddir=/usr/wine-lol-glibc/lib" >> configparms
-  echo "sbindir=/usr/wine-lol-glibc/bin" >> configparms
-  echo "rootsbindir=/usr/wine-lol-glibc/bin" >> configparms
-
-  # remove fortify for building libraries
-  CPPFLAGS=${CPPFLAGS/-D_FORTIFY_SOURCE=2/}
-
-  "$srcdir/glibc/configure" \
-      --libdir=/usr/wine-lol-glibc/lib \
-      --libexecdir=/usr/wine-lol-glibc/lib \
-      --enable-cet \
-      ${_configure_flags[@]}
-
-  # build libraries with fortify disabled
-  echo "build-programs=no" >> configparms
-  make
-
-  # re-enable fortify for programs
-  sed -i "/build-programs=/s#no#yes#" configparms
-
-  echo "CC += -D_FORTIFY_SOURCE=2" >> configparms
-  echo "CXX += -D_FORTIFY_SOURCE=2" >> configparms
-  make
-
   cd "$srcdir/lib32-glibc-build"
   export CC="gcc -m32 -mstackrealign"
   export CXX="g++ -m32 -mstackrealign"
 
-  echo "slibdir=/usr/wine-lol-glibc/lib32" >> configparms
-  echo "rtlddir=/usr/wine-lol-glibc/lib32" >> configparms
-  echo "sbindir=/usr/wine-lol-glibc/bin" >> configparms
-  echo "rootsbindir=/usr/wine-lol-glibc/bin" >> configparms
+  echo "slibdir=/opt/wine-lol/lib32" >> configparms
+  echo "rtlddir=/opt/wine-lol/lib32" >> configparms
+  echo "sbindir=/opt/wine-lol/bin" >> configparms
+  echo "rootsbindir=/opt/wine-lol/bin" >> configparms
 
   # remove fortify for building libraries
   CPPFLAGS=${CPPFLAGS/-D_FORTIFY_SOURCE=2/}
@@ -109,8 +82,8 @@ build() {
 
   "$srcdir/glibc/configure" \
       --host=i686-pc-linux-gnu \
-      --libdir=/usr/wine-lol-glibc/lib32 \
-      --libexecdir=/usr/wine-lol-glibc/lib32 \
+      --libdir=/opt/wine-lol/lib32 \
+      --libexecdir=/opt/wine-lol/lib32 \
       ${_configure_flags[@]}
 
   # build libraries with fortify disabled
@@ -126,35 +99,20 @@ build() {
 }
 
 package() {
-  make -C glibc-build install_root="$pkgdir" install
-
-  cd glibc
-
-  if check_option 'debug' n; then
-    find "$pkgdir"/usr/wine-lol-glibc/lib -name '*.a' -type f -exec strip $STRIP_STATIC {} + 2> /dev/null || true
-
-    # Do not strip these for gdb and valgrind functionality, but strip the rest
-    find "$pkgdir"/usr/wine-lol-glibc/lib \
-      -not -name 'ld-*.so' \
-      -not -name 'libc-*.so' \
-      -not -name 'libpthread-*.so' \
-      -not -name 'libthread_db-*.so' \
-      -name '*-*.so' -type f -exec strip $STRIP_SHARED {} + 2> /dev/null || true
-  fi
-
-
-
-  cd ../lib32-glibc-build
+  cd lib32-glibc-build
 
   make install_root="$pkgdir" install
 
   # Dynamic linker
-  install -d "$pkgdir/usr/wine-lol-glibc/lib"
-  ln -s ../lib32/ld-linux.so.2 "$pkgdir/usr/wine-lol-glibc/lib/"
+#  install -d "$pkgdir/opt/wine-lol/lib"
+#  ln -s ../lib32/ld-linux.so.2 "$pkgdir/opt/wine-lol/lib/"
 
   if check_option 'debug' n; then
-    find "$pkgdir"/usr/wine-lol-glibc/lib32 -name '*.a' -type f -exec strip $STRIP_STATIC {} + 2> /dev/null || true
-    find "$pkgdir"/usr/wine-lol-glibc/lib32 \
+    find "$pkgdir"/opt/wine-lol/bin -type f -executable -exec strip $STRIP_BINARIES {} + 2> /dev/null || true
+    find "$pkgdir"/opt/wine-lol/lib -name '*.a' -type f -exec strip $STRIP_STATIC {} + 2> /dev/null || true
+
+    find "$pkgdir"/opt/wine-lol/lib32 -name '*.a' -type f -exec strip $STRIP_STATIC {} + 2> /dev/null || true
+    find "$pkgdir"/opt/wine-lol/lib32 \
       -not -name 'ld-*.so' \
       -not -name 'libc-*.so' \
       -not -name 'libpthread-*.so' \
@@ -166,4 +124,5 @@ package() {
   # "system glibc" intentionally to make our glibc use the system files.
   rm -r "$pkgdir/usr/share"
   rm -r "$pkgdir/etc"
+  rmdir "$pkgdir/usr" # should be empty now
 }
