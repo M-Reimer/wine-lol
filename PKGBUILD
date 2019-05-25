@@ -36,50 +36,50 @@ options=(staticlibs)
 license=(LGPL)
 
 depends=(
-  lib32-attr
-  lib32-fontconfig
-  lib32-lcms2
-  lib32-libxml2
-  lib32-libxcursor
-  lib32-libxrandr
-  lib32-libxdamage
-  lib32-libxi
-  lib32-gettext
-  lib32-freetype2
-  lib32-glu
-  lib32-libsm
-  lib32-gcc-libs
-  lib32-libpcap
+  attr             lib32-attr
+  fontconfig       lib32-fontconfig
+  lcms2            lib32-lcms2
+  libxml2          lib32-libxml2
+  libxcursor       lib32-libxcursor
+  libxrandr        lib32-libxrandr
+  libxdamage       lib32-libxdamage
+  libxi            lib32-libxi
+  gettext          lib32-gettext
+  freetype2        lib32-freetype2
+  glu              lib32-glu
+  libsm            lib32-libsm
+  gcc-libs         lib32-gcc-libs
+  libpcap          lib32-libpcap
   desktop-file-utils
   wine-lol-glibc
 )
 
 makedepends=(autoconf ncurses bison perl fontforge flex
   'gcc>=4.5.0-2'
-  lib32-giflib
-  lib32-libpng
-  lib32-gnutls
-  lib32-libxinerama
-  lib32-libxcomposite
-  lib32-libxmu
-  lib32-libxxf86vm
-  lib32-libldap
-  lib32-mpg123
-  lib32-openal
-  lib32-v4l-utils
-  lib32-alsa-lib
-  lib32-libxcomposite
-  lib32-mesa
-  lib32-mesa-libgl
-  lib32-opencl-icd-loader
-  lib32-libxslt
-  lib32-libpulse
-  lib32-libva
-  lib32-gtk3
-  lib32-gst-plugins-base-libs
-  lib32-vulkan-icd-loader
-  lib32-sdl2
-  lib32-vkd3d
+  giflib                lib32-giflib
+  libpng                lib32-libpng
+  gnutls                lib32-gnutls
+  libxinerama           lib32-libxinerama
+  libxcomposite         lib32-libxcomposite
+  libxmu                lib32-libxmu
+  libxxf86vm            lib32-libxxf86vm
+  libldap               lib32-libldap
+  mpg123                lib32-mpg123
+  openal                lib32-openal
+  v4l-utils             lib32-v4l-utils
+  alsa-lib              lib32-alsa-lib
+  libxcomposite         lib32-libxcomposite
+  mesa                  lib32-mesa
+  mesa-libgl            lib32-mesa-libgl
+  opencl-icd-loader     lib32-opencl-icd-loader
+  libxslt               lib32-libxslt
+  libpulse              lib32-libpulse
+  libva                 lib32-libva
+  gtk3                  lib32-gtk3
+  gst-plugins-base-libs lib32-gst-plugins-base-libs
+  vulkan-icd-loader     lib32-vulkan-icd-loader
+  sdl2                  lib32-sdl2
+  vkd3d                 lib32-vkd3d
   sane
   libgphoto2
   gsm
@@ -89,28 +89,28 @@ makedepends=(autoconf ncurses bison perl fontforge flex
 )
 
 optdepends=(
-  lib32-giflib
-  lib32-libpng
-  lib32-libldap
-  lib32-gnutls
-  lib32-mpg123
-  lib32-openal
-  lib32-v4l-utils
-  lib32-libpulse
-  lib32-alsa-plugins
-  lib32-alsa-lib
-  lib32-libjpeg-turbo
-  lib32-libxcomposite
-  lib32-libxinerama
-  lib32-ncurses
-  lib32-opencl-icd-loader
-  lib32-libxslt
-  lib32-libva
-  lib32-gtk3
-  lib32-gst-plugins-base-libs
-  lib32-vulkan-icd-loader
-  lib32-sdl2
-  lib32-vkd3d
+  giflib                lib32-giflib
+  libpng                lib32-libpng
+  libldap               lib32-libldap
+  gnutls                lib32-gnutls
+  mpg123                lib32-mpg123
+  openal                lib32-openal
+  v4l-utils             lib32-v4l-utils
+  libpulse              lib32-libpulse
+  alsa-plugins          lib32-alsa-plugins
+  alsa-lib              lib32-alsa-lib
+  libjpeg-turbo         lib32-libjpeg-turbo
+  libxcomposite         lib32-libxcomposite
+  libxinerama           lib32-libxinerama
+  ncurses               lib32-ncurses
+  opencl-icd-loader     lib32-opencl-icd-loader
+  libxslt               lib32-libxslt
+  libva                 lib32-libva
+  gtk3                  lib32-gtk3
+  gst-plugins-base-libs lib32-gst-plugins-base-libs
+  vulkan-icd-loader     lib32-vulkan-icd-loader
+  sdl2                  lib32-sdl2
+  vkd3d                 lib32-vkd3d
   sane
   libgphoto2
   gsm
