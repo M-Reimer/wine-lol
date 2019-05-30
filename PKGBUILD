@@ -13,8 +13,8 @@
 # Additional crash fix: https://bugs.winehq.org/show_bug.cgi?id=45667#c5
 
 pkgname=wine-lol
-pkgver=4.8
-pkgrel=5
+pkgver=4.9
+pkgrel=1
 
 _pkgbasever=${pkgver/rc/-rc}
 
@@ -23,8 +23,8 @@ source=(https://dl.winehq.org/wine/source/4.x/wine-$_pkgbasever.tar.xz
         30-win32-aliases.conf
         wine-lol–poc1-wine.diff::https://bugs.winehq.org/attachment.cgi?id=64481
         wine-lol-patch-stub.diff::https://bugs.winehq.org/attachment.cgi?id=64496)
-sha512sums=('ad91c31aad86b9932777a1c5a84760f41c63cfbb5d79f1a8afd132a8948667283f85e081a454cfc0904544394eaabb00fb986eba15efd8a8409db38e793f3dab'
-            'f2e7fbe1ed0f77bd307185d0f7aa9e837e64f86ae98828db25e05c998ec07a9dd57dc9f3e6b093310c95ff2a517825d36420d7bd9fc9028d11bc29321ac3559e'
+sha512sums=('bf750af9569b0c564cd9581b9de8c399f6e42227eb6e79338ec6ba70f135fe3388b0792ff013add97341c488ed906227cdf93cc275e362ba232df78afaaab66d'
+            '9676f54833a424f965af7591c40aa40cd3fb3b36062484de56585a631dafa68a9a545f00153350c067a0d73146f9f169a678041bb141f7562f9df6e31ec4e2d5'
             '6e54ece7ec7022b3c9d94ad64bdf1017338da16c618966e8baf398e6f18f80f7b0576edf1d1da47ed77b96d577e4cbb2bb0156b0b11c183a0accf22654b0a2bb'
             'ed9c36aee756ee8fba0b08a3ff895893df1c771077964cbe5ce1a23f66addf7212c8ca8e601cf14e5dae82af4b275d0a11c7207acd7dc4f48fdb1216d819f9dd'
             '159b075f11607114ee81ef801c77969c7b630b024a8a698b5f20a208f2cf780a2109f055d420e4292b774f3e5524a05b4c05d446d5217f1c050adb12b7409e45')
@@ -136,19 +136,20 @@ prepare() {
   patch -p1 -i "$srcdir/wine-lol-patch-stub.diff"
   popd
 
-  # https://bugs.winehq.org/show_bug.cgi?id=43530
-  export CFLAGS="${CFLAGS/-fno-plt/}"
-  export LDFLAGS="${LDFLAGS/,-z,now/}"
-
+  # Fix opencl header path
   sed 's|OpenCL/opencl.h|CL/opencl.h|g' -i $pkgname/configure*
-
-  # Get rid of old build dirs
-  rm -rf $pkgname-{32,64}-build
-  mkdir $pkgname-{32,64}-build
 }
 
 build() {
   cd "$srcdir"
+
+  # Get rid of old build dirs
+  rm -rf $pkgname-{32,64}-build
+  mkdir $pkgname-{32,64}-build
+
+  # https://bugs.winehq.org/show_bug.cgi?id=43530
+  export CFLAGS="${CFLAGS/-fno-plt/}"
+  export LDFLAGS="${LDFLAGS/,-z,now/}"
 
   # We need RPATH to point to the "lib32" in our prefix
   _RPATH="-rpath=/opt/wine-lol/lib32"
