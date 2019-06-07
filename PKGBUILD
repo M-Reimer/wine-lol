@@ -8,7 +8,7 @@
 pkgname=wine-lol-glibc
 pkgdesc='GNU C Library patched for wine-lol'
 pkgver=2.29
-pkgrel=2
+pkgrel=3
 arch=(x86_64)
 url='https://www.gnu.org/software/libc'
 license=(GPL LGPL)
@@ -106,6 +106,9 @@ package() {
   # Dynamic linker
 #  install -d "$pkgdir/opt/wine-lol/lib"
 #  ln -s ../lib32/ld-linux.so.2 "$pkgdir/opt/wine-lol/lib/"
+
+  # Symlink /opt/wine-lol/lib32/locale to /usr/lib/locale
+  ln -s /usr/lib/locale "$pkgdir/opt/wine-lol/lib32/locale"
 
   if check_option 'debug' n; then
     find "$pkgdir"/opt/wine-lol/bin -type f -executable -exec strip $STRIP_BINARIES {} + 2> /dev/null || true
