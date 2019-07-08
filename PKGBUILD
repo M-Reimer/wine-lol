@@ -13,7 +13,7 @@
 # Additional crash fix: https://bugs.winehq.org/show_bug.cgi?id=45667#c5
 
 pkgname=wine-lol
-pkgver=4.9
+pkgver=4.12.1
 pkgrel=1
 
 _pkgbasever=${pkgver/rc/-rc}
@@ -21,10 +21,10 @@ _pkgbasever=${pkgver/rc/-rc}
 source=(https://dl.winehq.org/wine/source/4.x/wine-$_pkgbasever.tar.xz
         "wine-staging-v$_pkgbasever.tar.gz::https://github.com/wine-staging/wine-staging/archive/v$_pkgbasever.tar.gz"
         30-win32-aliases.conf
-        wine-lol–poc1-wine.diff::https://bugs.winehq.org/attachment.cgi?id=64481
+        wine-lol-poc1-wine.diff::https://bugs.winehq.org/attachment.cgi?id=64481
         wine-lol-patch-stub.diff::https://bugs.winehq.org/attachment.cgi?id=64496)
-sha512sums=('bf750af9569b0c564cd9581b9de8c399f6e42227eb6e79338ec6ba70f135fe3388b0792ff013add97341c488ed906227cdf93cc275e362ba232df78afaaab66d'
-            '9676f54833a424f965af7591c40aa40cd3fb3b36062484de56585a631dafa68a9a545f00153350c067a0d73146f9f169a678041bb141f7562f9df6e31ec4e2d5'
+sha512sums=('5d226aa4f24c59949c88d377d8f3d38839179e473b7e5bbf029af8142dfa23fd046ca919b63c8c8fc7e1a46077a860d3dab9d2e040f0367c85c8d386707222c1'
+            '804e99567632326f5ea55fd86c4ed236da3b3636b0aaf5dbf4427694b0786326bd048fbb119b37fc66d4072dacec9ac354b804ad372cad69cbf086360eaedc38'
             '6e54ece7ec7022b3c9d94ad64bdf1017338da16c618966e8baf398e6f18f80f7b0576edf1d1da47ed77b96d577e4cbb2bb0156b0b11c183a0accf22654b0a2bb'
             'ed9c36aee756ee8fba0b08a3ff895893df1c771077964cbe5ce1a23f66addf7212c8ca8e601cf14e5dae82af4b275d0a11c7207acd7dc4f48fdb1216d819f9dd'
             '159b075f11607114ee81ef801c77969c7b630b024a8a698b5f20a208f2cf780a2109f055d420e4292b774f3e5524a05b4c05d446d5217f1c050adb12b7409e45')
@@ -132,7 +132,7 @@ prepare() {
 
   # Apply League Of Legends fixes
   pushd "$srcdir/$pkgname"
-  patch -p1 -i "$srcdir/wine-lol–poc1-wine.diff"
+  patch -p1 -i "$srcdir/wine-lol-poc1-wine.diff"
   patch -p1 -i "$srcdir/wine-lol-patch-stub.diff"
   popd
 
