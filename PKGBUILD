@@ -70,7 +70,6 @@ makedepends=(autoconf ncurses bison perl fontforge flex
   alsa-lib              lib32-alsa-lib
   libxcomposite         lib32-libxcomposite
   mesa                  lib32-mesa
-  mesa-libgl            lib32-mesa-libgl
   opencl-icd-loader     lib32-opencl-icd-loader
   libxslt               lib32-libxslt
   libpulse              lib32-libpulse
