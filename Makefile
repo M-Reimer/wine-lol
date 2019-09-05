@@ -6,6 +6,7 @@ glibc_VERSION=2.29-3
 wine_NAME=wine-lol
 glibc_NAME=wine-lol-glibc
 
+.PHONY: all
 all: checkpath tempdir wine glibc
 
 .PHONY: checkpath
@@ -35,12 +36,17 @@ tempdir:
 wine glibc: ARCHPKG=$($@_NAME)-$($@_VERSION)-x86_64.pkg.tar.xz
 wine glibc: DEBPATH=$($@_NAME)_$($@_VERSION)_i386.deb
 wine glibc:
-	echo $(ARCHPKG)
+# Extract Arch package to build directory. Only take the opt/* part of it
 	bsdtar -vxf "$(PKGPATH)/$(ARCHPKG)" --include='opt/*' -C "build/$@"
-	rm -rf "build/$@/etc"
+
+# Create the md5sums file
 	pushd "build/$@"; find * -type f ! -path 'DEBIAN/*' -exec md5sum '{}' \; > "DEBIAN/md5sums"
+
+# Create the control file
 	cp "$@-control" "build/$@/DEBIAN/control"
 	SIZE=$$(du build/wine --exclude '*/DEBIAN/*' -s | cut -f 1);\
 	sed -i "s/\$$(SIZE)/$$SIZE/" "build/$@/DEBIAN/control"
 	sed -i 's/$$(VERSION)/$($@_VERSION)/' "build/$@/DEBIAN/control"
+
+# Create the actual debial package
 	dpkg-deb --root-owner-group --build "build/$@" $(DEBPATH)
