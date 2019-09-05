@@ -1,0 +1,11 @@
+Package: wine-lol-glibc
+Version: $(VERSION)
+Architecture: i386
+Maintainer: Manuel Reimer <mail+arch@m-reimer.de>
+Installed-Size: $(SIZE)
+Depends:
+Suggests:
+Priority: optional
+Multi-Arch: same
+Homepage: https://m-reimer.de/wine-lol
+Description: GNU C Library patched for wine-lol
