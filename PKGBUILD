@@ -13,7 +13,7 @@
 # Additional crash fix: https://bugs.winehq.org/show_bug.cgi?id=45667#c5
 
 pkgname=wine-lol
-pkgver=4.16
+pkgver=4.17
 pkgrel=1
 
 _pkgbasever=${pkgver/rc/-rc}
@@ -23,8 +23,8 @@ source=(https://dl.winehq.org/wine/source/4.x/wine-$_pkgbasever.tar.xz
         30-win32-aliases.conf
         wine-lol-poc1-wine.diff::https://bugs.winehq.org/attachment.cgi?id=64481
         wine-lol-patch-stub.diff::https://bugs.winehq.org/attachment.cgi?id=64496)
-sha512sums=('f3097b06e490356e68484239b7a2ac1cfa968818565c79386ba6c0e70a318c092af5549da8218935cbe891876fa519d361a3775d0ab5d4adc192555ae0e45d86'
-            '8782e4aecb34443404b1ac02c6b1ba91887ad12f07c7960601f879b034937d5ee6f1c1493437e765804beed6e68fa20383f7c02a09534526cc5f4bb857048faf'
+sha512sums=('f762aab2596a4b5cf73d3282be561d25a2fe69e5d4a5ec2e29db47b3eda7496ca9eb7e57ff7765853d258422898bfa775bf9b458e61eef837b213e422bd748b8'
+            '1f27511c8ff6619f4138eb3b2cd0cc1cdf42c0cd4206c68bdf792ae17c339611016e32babad121f0decf20331f7ce4400033be03c4db26cb6a4dc601c9c4b14d'
             '6e54ece7ec7022b3c9d94ad64bdf1017338da16c618966e8baf398e6f18f80f7b0576edf1d1da47ed77b96d577e4cbb2bb0156b0b11c183a0accf22654b0a2bb'
             'ed9c36aee756ee8fba0b08a3ff895893df1c771077964cbe5ce1a23f66addf7212c8ca8e601cf14e5dae82af4b275d0a11c7207acd7dc4f48fdb1216d819f9dd'
             '159b075f11607114ee81ef801c77969c7b630b024a8a698b5f20a208f2cf780a2109f055d420e4292b774f3e5524a05b4c05d446d5217f1c050adb12b7409e45')
