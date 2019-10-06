@@ -7,8 +7,8 @@
 
 pkgname=wine-lol-glibc
 pkgdesc='GNU C Library patched for wine-lol'
-pkgver=2.29
-pkgrel=3
+pkgver=2.30
+pkgrel=1
 arch=(x86_64)
 url='https://www.gnu.org/software/libc'
 license=(GPL LGPL)
@@ -20,12 +20,10 @@ options=(!strip staticlibs)
 #source=(git+https://sourceware.org/git/glibc.git#commit=$_commit
 source=(https://ftp.gnu.org/gnu/glibc/glibc-$pkgver.tar.xz
         bz20338.patch
-        0001-Revert-elf-Correct-absolute-SHN_ABS-symbol-run-time-.patch
         file-truncated-while-reading-soname-after-patchelf.patch
         wine-lol-poc1-glibc.diff::https://bugs.winehq.org/attachment.cgi?id=64482)
-md5sums=('e6c279d5b2f0736f740216f152acf974'
-         'dc0d3ad59aeaaf591b085a77de6e03e9'
-         'af5d3c5227ac639effe39667a43879a1'
+md5sums=('2b1dbdf27b28620752956c061d62f60c'
+         '430673eccc78e52c249aa4b0f1786450'
          '0820504d2e83ee15f74a656771361872'
          '65e6d204ab9ad787c8dce999c4ba5c17')
 
