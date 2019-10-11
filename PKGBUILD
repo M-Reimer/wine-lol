@@ -14,7 +14,7 @@
 
 pkgname=wine-lol
 pkgver=4.17
-pkgrel=1
+pkgrel=2
 
 _pkgbasever=${pkgver/rc/-rc}
 
@@ -22,12 +22,14 @@ source=(https://dl.winehq.org/wine/source/4.x/wine-$_pkgbasever.tar.xz
         "wine-staging-v$_pkgbasever.tar.gz::https://github.com/wine-staging/wine-staging/archive/v$_pkgbasever.tar.gz"
         30-win32-aliases.conf
         wine-lol-poc1-wine.diff::https://bugs.winehq.org/attachment.cgi?id=64481
-        wine-lol-patch-stub.diff::https://bugs.winehq.org/attachment.cgi?id=64496)
+        wine-lol-patch-stub.diff::https://bugs.winehq.org/attachment.cgi?id=64496
+        wine-lol-poc2-wine.diff::https://bugs.winehq.org/attachment.cgi?id=65424)
 sha512sums=('f762aab2596a4b5cf73d3282be561d25a2fe69e5d4a5ec2e29db47b3eda7496ca9eb7e57ff7765853d258422898bfa775bf9b458e61eef837b213e422bd748b8'
             '1f27511c8ff6619f4138eb3b2cd0cc1cdf42c0cd4206c68bdf792ae17c339611016e32babad121f0decf20331f7ce4400033be03c4db26cb6a4dc601c9c4b14d'
             '6e54ece7ec7022b3c9d94ad64bdf1017338da16c618966e8baf398e6f18f80f7b0576edf1d1da47ed77b96d577e4cbb2bb0156b0b11c183a0accf22654b0a2bb'
             'ed9c36aee756ee8fba0b08a3ff895893df1c771077964cbe5ce1a23f66addf7212c8ca8e601cf14e5dae82af4b275d0a11c7207acd7dc4f48fdb1216d819f9dd'
-            '159b075f11607114ee81ef801c77969c7b630b024a8a698b5f20a208f2cf780a2109f055d420e4292b774f3e5524a05b4c05d446d5217f1c050adb12b7409e45')
+            '159b075f11607114ee81ef801c77969c7b630b024a8a698b5f20a208f2cf780a2109f055d420e4292b774f3e5524a05b4c05d446d5217f1c050adb12b7409e45'
+            '56213f38a9f6cd9272a86e4defabc3b88453d160f2043db909b0f7b329ff93238a6dfe0cf19213372793171a2ac909f8c09e21d91fc685deb2b65cf98ad0a234')
 
 pkgdesc="A compatibility layer for running Windows programs - Staging branch with League Of Legends fixes"
 url="http://www.wine-staging.com"
@@ -134,6 +136,7 @@ prepare() {
   pushd "$srcdir/$pkgname"
   patch -p1 -i "$srcdir/wine-lol-poc1-wine.diff"
   patch -p1 -i "$srcdir/wine-lol-patch-stub.diff"
+  patch -p1 -i "$srcdirwine-lol-poc2-wine.diff"
   popd
 
   # Fix opencl header path
