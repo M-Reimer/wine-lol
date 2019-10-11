@@ -136,7 +136,7 @@ prepare() {
   pushd "$srcdir/$pkgname"
   patch -p1 -i "$srcdir/wine-lol-poc1-wine.diff"
   patch -p1 -i "$srcdir/wine-lol-patch-stub.diff"
-  patch -p1 -i "$srcdirwine-lol-poc2-wine.diff"
+  patch -p1 -i "$srcdir/wine-lol-poc2-wine.diff"
   popd
 
   # Fix opencl header path
