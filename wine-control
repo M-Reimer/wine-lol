@@ -3,7 +3,7 @@ Version: $(VERSION)
 Architecture: i386
 Maintainer: Manuel Reimer <mail+arch@m-reimer.de>
 Installed-Size: $(SIZE)
-Depends: wine-lol-glibc, libfontconfig1, libfreetype6, libasound2, libglib2.0-0, libgphoto2-6, libgphoto2-port12, libgstreamer-plugins-base1.0-0, libgstreamer1.0-0, liblcms2-2, libldap-2.4-2, libmpg123-0, libopenal1, libpcap0.8, libpulse0, libudev1, libx11-6, libxext6, libxml2, ocl-icd-libopencl1 | libopencl1, zlib1g
+Depends: wine-lol-glibc (>= $(GLIBC_VERSION)), libfontconfig1, libfreetype6, libasound2, libglib2.0-0, libgphoto2-6, libgphoto2-port12, libgstreamer-plugins-base1.0-0, libgstreamer1.0-0, liblcms2-2, libldap-2.4-2, libmpg123-0, libopenal1, libpcap0.8, libpulse0, libudev1, libx11-6, libxext6, libxml2, ocl-icd-libopencl1 | libopencl1, zlib1g
 Suggests: winetricks
 Priority: optional
 Multi-Arch: same

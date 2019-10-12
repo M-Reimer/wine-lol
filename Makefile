@@ -1,7 +1,7 @@
 
 PKGPATH?=
-wine_VERSION=4.16-1
-glibc_VERSION=2.29-3
+wine_VERSION=4.17-2
+glibc_VERSION=2.30-1
 
 wine_NAME=wine-lol
 glibc_NAME=wine-lol-glibc
@@ -47,6 +47,7 @@ wine glibc:
 	SIZE=$$(du build/wine --exclude '*/DEBIAN/*' -s | cut -f 1);\
 	sed -i "s/\$$(SIZE)/$$SIZE/" "build/$@/DEBIAN/control"
 	sed -i 's/$$(VERSION)/$($@_VERSION)/' "build/$@/DEBIAN/control"
+	sed -i 's/$$(GLIBC_VERSION)/$(glibc_VERSION)/' "build/$@/DEBIAN/control"
 
 # Create the actual debial package
 	dpkg-deb --root-owner-group --build "build/$@" $(DEBPATH)
