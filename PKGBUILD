@@ -178,15 +178,15 @@ build() {
     --with-xattr \
     --libdir=/opt/wine-lol/lib32
 
-  make depend LDRPATH_INSTALL="-Wl,$_RPATH,$_LINKER" # Use wine-lib-glibc for -install
-  make
+  make -j$(nproc) depend LDRPATH_INSTALL="-Wl,$_RPATH,$_LINKER" # Use wine-lib-glibc for -install
+  make -j$(nproc)
 }
 
 package() {
   msg2 "Packaging Wine-32..."
   cd "$srcdir/$pkgname-32-build"
 
-  make prefix="$pkgdir/opt/wine-lol" \
+  make -j$(nproc) prefix="$pkgdir/opt/wine-lol" \
     libdir="$pkgdir/opt/wine-lol/lib32" \
     dlldir="$pkgdir/opt/wine-lol/lib32/wine" install
 
