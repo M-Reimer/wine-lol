@@ -130,8 +130,6 @@ prepare() {
 
   # apply wine-staging patchset
   pushd wine-staging-$_pkgbasever/patches
-  # disable user32-rawinput patchset (https://bugs.winehq.org/show_bug.cgi?id=47834)
-  ./patchinstall.sh DESTDIR="$srcdir/$pkgname" --all -W user32-rawinput
   popd
 
   # Apply League Of Legends fixes
