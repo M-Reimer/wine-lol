@@ -11,7 +11,6 @@
 # Some history:
 # Primary bug report: https://bugs.winehq.org/show_bug.cgi?id=47198
 # Additional crash fix: https://bugs.winehq.org/show_bug.cgi?id=45667#c5
-# Fix for version 9.20: https://bugs.winehq.org/show_bug.cgi?id=47915#c2
 
 pkgname=wine-lol
 pkgver=4.18
@@ -23,14 +22,12 @@ source=(https://dl.winehq.org/wine/source/4.x/wine-$_pkgbasever.tar.xz
         "wine-staging-v$_pkgbasever.tar.gz::https://github.com/wine-staging/wine-staging/archive/v$_pkgbasever.tar.gz"
         30-win32-aliases.conf
         wine-lol-poc1-wine.diff::https://bugs.winehq.org/attachment.cgi?id=64481
-        wine-lol-patch-stub.diff::https://bugs.winehq.org/attachment.cgi?id=64496
-        wine-lol-bug47915.diff::https://bugs.winehq.org/attachment.cgi?id=65424)
+        wine-lol-patch-stub.diff::https://bugs.winehq.org/attachment.cgi?id=64496)
 sha512sums=('794802289fa021092a86c939a3618563ad1523689cdafb6fd58aed06c6a5c867fc5ef0d3dbb2435a65c3eb0d3b982b37e983257a7a7d20c3b6d71df9bf5bf1f1'
             'e5ddb7ac09322b5f2c8e8facff9639699a6a3e72a96f4028e88e23e81f73c766bde1479e54a9a80bd7f33c7747a8220e2699f4dcfe55117b9832ff4cdba60a04'
             '6e54ece7ec7022b3c9d94ad64bdf1017338da16c618966e8baf398e6f18f80f7b0576edf1d1da47ed77b96d577e4cbb2bb0156b0b11c183a0accf22654b0a2bb'
             'ed9c36aee756ee8fba0b08a3ff895893df1c771077964cbe5ce1a23f66addf7212c8ca8e601cf14e5dae82af4b275d0a11c7207acd7dc4f48fdb1216d819f9dd'
-            '159b075f11607114ee81ef801c77969c7b630b024a8a698b5f20a208f2cf780a2109f055d420e4292b774f3e5524a05b4c05d446d5217f1c050adb12b7409e45'
-            '56213f38a9f6cd9272a86e4defabc3b88453d160f2043db909b0f7b329ff93238a6dfe0cf19213372793171a2ac909f8c09e21d91fc685deb2b65cf98ad0a234')
+            '159b075f11607114ee81ef801c77969c7b630b024a8a698b5f20a208f2cf780a2109f055d420e4292b774f3e5524a05b4c05d446d5217f1c050adb12b7409e45')
 
 pkgdesc="A compatibility layer for running Windows programs - Staging branch with League Of Legends fixes"
 url="http://www.wine-staging.com"
