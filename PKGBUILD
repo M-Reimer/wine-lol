@@ -130,6 +130,7 @@ prepare() {
 
   # apply wine-staging patchset
   pushd wine-staging-$_pkgbasever/patches
+  ./patchinstall.sh DESTDIR="$srcdir/$pkgname" --all
   popd
 
   # Apply League Of Legends fixes
