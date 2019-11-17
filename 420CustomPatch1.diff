@@ -84,9 +84,9 @@ index c5b2008e44..96ca266921 100644
      __wine_user_shared_data();
      fill_cpu_info();
  
-++#ifdef __i386__
-++   seccomp_init();
-++#endif
++#ifdef __i386__
++   seccomp_init();
++#endif
 +
      return teb;
  }
