@@ -13,7 +13,7 @@
 # Additional crash fix: https://bugs.winehq.org/show_bug.cgi?id=45667#c5
 
 pkgname=wine-lol
-pkgver=4.19
+pkgver=4.20
 pkgrel=1
 
 _pkgbasever=${pkgver/rc/-rc}
@@ -21,13 +21,11 @@ _pkgbasever=${pkgver/rc/-rc}
 source=(https://dl.winehq.org/wine/source/4.x/wine-$_pkgbasever.tar.xz
         "wine-staging-v$_pkgbasever.tar.gz::https://github.com/wine-staging/wine-staging/archive/v$_pkgbasever.tar.gz"
         30-win32-aliases.conf
-        wine-lol-poc1-wine.diff::https://bugs.winehq.org/attachment.cgi?id=64481
-        wine-lol-patch-stub.diff::https://bugs.winehq.org/attachment.cgi?id=64496)
-sha512sums=('a86bd7ccfb1878445ea946e4ca72769c10b4d966bcc893536a8c3eaa29484ba687dc3a44755ec92a2ad6073e736985b814c0c682bf4f90b5ffe2bca0ebbf4b25'
-            'a47ae16dd39797b54011f942fe7e722897af7ddc0bed2bf2e39c46aecf60a02769f7287609c63b4c0c3f1c8e40172e0cdf3bdb53562a07d7a2b7ac53e570dbdc'
+        420CustomPatch1.diff)
+sha512sums=('c01af88106b8a808fbceb6ace45882c300656a47913142ba7052283b358d6d5b4379895804e15a2ca1870a4e955ea3ca857ec042a8070ea4ffaefa0c7a84e701'
+            '2ce4f6fa83fc275c83bc7f7bbd4b1a4ca65f7e55e16af40958635b8b2efc2b174baa79ed576ed09c4c13b572756fb6262f19281e5b72797c7e0f1f6c4dd1a4ee'
             '6e54ece7ec7022b3c9d94ad64bdf1017338da16c618966e8baf398e6f18f80f7b0576edf1d1da47ed77b96d577e4cbb2bb0156b0b11c183a0accf22654b0a2bb'
-            'ed9c36aee756ee8fba0b08a3ff895893df1c771077964cbe5ce1a23f66addf7212c8ca8e601cf14e5dae82af4b275d0a11c7207acd7dc4f48fdb1216d819f9dd'
-            '159b075f11607114ee81ef801c77969c7b630b024a8a698b5f20a208f2cf780a2109f055d420e4292b774f3e5524a05b4c05d446d5217f1c050adb12b7409e45')
+            '74468d7a64e92b9f06bcec07312077906b0cf351e078f31d1aeb74cef36f57679d5d373210df90f16cfc07312ce4707549590f5286449f7a98d8245efd91d11d')
 
 pkgdesc="A compatibility layer for running Windows programs - Staging branch with League Of Legends fixes"
 url="http://www.wine-staging.com"
@@ -132,8 +130,7 @@ prepare() {
 
   # Apply League Of Legends fixes
   pushd "$srcdir/$pkgname"
-  patch -p1 -i "$srcdir/wine-lol-poc1-wine.diff"
-  patch -p1 -i "$srcdir/wine-lol-patch-stub.diff"
+  patch -p1 -i "$srcdir/420CustomPatch1.diff"
   popd
 
   # Fix opencl header path
