@@ -154,11 +154,11 @@ pkgbase = wine-lol
 	source = 30-win32-aliases.conf
 	source = 420CustomPatch1.diff
 	source = wine-lol-bug48138.diff::https://bugs.winehq.org/attachment.cgi?id=65743
-	md5sums = 8cc2c2df281ef89217573ca228bc7ba7
-	md5sums = 792ad8b24dfa26200b5ab5be7168fbbc
-	md5sums = 1ff4e467f59409272088d92173a0f801
-	md5sums = ed4f80f4578ab4e403a82a326ae9b7eb
-	md5sums = 3a2d0b3f04bcccfc0c2ce3b5e4f5c2cd
+	sha512sums = c01af88106b8a808fbceb6ace45882c300656a47913142ba7052283b358d6d5b4379895804e15a2ca1870a4e955ea3ca857ec042a8070ea4ffaefa0c7a84e701
+	sha512sums = 2ce4f6fa83fc275c83bc7f7bbd4b1a4ca65f7e55e16af40958635b8b2efc2b174baa79ed576ed09c4c13b572756fb6262f19281e5b72797c7e0f1f6c4dd1a4ee
+	sha512sums = 6e54ece7ec7022b3c9d94ad64bdf1017338da16c618966e8baf398e6f18f80f7b0576edf1d1da47ed77b96d577e4cbb2bb0156b0b11c183a0accf22654b0a2bb
+	sha512sums = a17db33ba5d6114bd71d1b013adc8e5ca0c3cedf856301cba59f95dadf643d2ee0e5a2d7abb2daedd5ed7c45cdbe93c78527f4d962bedc54776bb21cfc7e8b0b
+	sha512sums = 9f30236711434f88a83ec7d384e12730c4430559545219711daff27fdff8b9a615b983881b428432d5aa8e63d1da411ca71d23ac22e72f91e6e0d7e325cd097e
 
 pkgname = wine-lol
 
