@@ -1,6 +1,6 @@
 
 PKGPATH?=
-wine_VERSION=4.17-2
+wine_VERSION=4.20-1
 glibc_VERSION=2.30-1
 
 wine_NAME=wine-lol
