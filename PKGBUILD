@@ -12,7 +12,7 @@
 # Primary bug report: https://bugs.winehq.org/show_bug.cgi?id=47198
 
 pkgname=wine-lol
-pkgver=5.0rc3
+pkgver=5.0rc4
 pkgrel=1
 
 _pkgbasever=${pkgver/rc/-rc}
@@ -21,8 +21,8 @@ source=(https://dl.winehq.org/wine/source/5.0/wine-$_pkgbasever.tar.xz
         "wine-staging-v$_pkgbasever.tar.gz::https://github.com/wine-staging/wine-staging/archive/v$_pkgbasever.tar.gz"  
         30-win32-aliases.conf
         420CustomPatch1.diff)
-sha512sums=('25987c107855fc944e803e75faa1712e8aca1cf90fd321797fa25b713629804fa11be030d53a4769859a2fd55cbbcf0a2e1ab19eff006bcea57aab2e4235349d'
-            '46cab8a768889d2448365282c7810d88050ae64e651f666abd0039b2a34f76efeb0946184b046e5a66c71a75dce748931c5bbc4e8529857765a0a0f35e45a0b6'
+sha512sums=('04971bca86137924d59b63ecb75aea5fd77d37f52d063d61a72a2d13ed3cb2b7f3bf867dc644c855073cacff98e14c536bf375e49441198c6943376a3de4f382'
+            'e17b1969b6dbc6493dcf51a0732883d16b5c8b1dd7ec0ab3b165617e566f3f9dc8b4ebcd8e626e5e9ec0bc9fb0d7e85744b51a1ee5389e1a58089b4c3f37f7fe'
             '6e54ece7ec7022b3c9d94ad64bdf1017338da16c618966e8baf398e6f18f80f7b0576edf1d1da47ed77b96d577e4cbb2bb0156b0b11c183a0accf22654b0a2bb'
             'a17db33ba5d6114bd71d1b013adc8e5ca0c3cedf856301cba59f95dadf643d2ee0e5a2d7abb2daedd5ed7c45cdbe93c78527f4d962bedc54776bb21cfc7e8b0b'
             )
