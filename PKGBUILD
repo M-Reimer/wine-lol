@@ -7,7 +7,7 @@
 
 pkgname=wine-lol-glibc
 pkgdesc='GNU C Library patched for wine-lol'
-pkgver=2.30
+pkgver=2.31
 pkgrel=1
 arch=(x86_64)
 url='https://www.gnu.org/software/libc'
@@ -20,11 +20,9 @@ options=(!strip staticlibs)
 #source=(git+https://sourceware.org/git/glibc.git#commit=$_commit
 source=(https://ftp.gnu.org/gnu/glibc/glibc-$pkgver.tar.xz
         bz20338.patch
-        file-truncated-while-reading-soname-after-patchelf.patch
         wine-lol-poc1-glibc.diff::https://bugs.winehq.org/attachment.cgi?id=64482)
-md5sums=('2b1dbdf27b28620752956c061d62f60c'
+md5sums=('78a720f17412f3c3282be5a6f3363ec6'
          '430673eccc78e52c249aa4b0f1786450'
-         '0820504d2e83ee15f74a656771361872'
          '65e6d204ab9ad787c8dce999c4ba5c17')
 
 prepare() {
