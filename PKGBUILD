@@ -10,24 +10,22 @@
 # One fix requires a "hacked" glibc (wine-lol-glibc on AUR).
 # Some history:
 # Primary bug report: https://bugs.winehq.org/show_bug.cgi?id=47198
-# Bug about 9.23 crash: https://bugs.winehq.org/show_bug.cgi?id=48138
 
 pkgname=wine-lol
-pkgver=4.20
+pkgver=5.1
 pkgrel=1
 
 _pkgbasever=${pkgver/rc/-rc}
 
-source=(https://dl.winehq.org/wine/source/4.x/wine-$_pkgbasever.tar.xz
-        "wine-staging-v$_pkgbasever.tar.gz::https://github.com/wine-staging/wine-staging/archive/v$_pkgbasever.tar.gz"
+source=(https://dl.winehq.org/wine/source/5.x/wine-$_pkgbasever.tar.xz                                                  
+        "wine-staging-v$_pkgbasever.tar.gz::https://github.com/wine-staging/wine-staging/archive/v$_pkgbasever.tar.gz"  
         30-win32-aliases.conf
-        420CustomPatch1.diff
-        wine-lol-bug48138.diff::https://bugs.winehq.org/attachment.cgi?id=65743)
-sha512sums=('c01af88106b8a808fbceb6ace45882c300656a47913142ba7052283b358d6d5b4379895804e15a2ca1870a4e955ea3ca857ec042a8070ea4ffaefa0c7a84e701'
-            '2ce4f6fa83fc275c83bc7f7bbd4b1a4ca65f7e55e16af40958635b8b2efc2b174baa79ed576ed09c4c13b572756fb6262f19281e5b72797c7e0f1f6c4dd1a4ee'
+        420CustomPatch1.diff)
+sha512sums=('b842b533884f15a8fb71373258671d74aee997d9ed9ee0fb36f945cd2006b494f6cc6c91a8ca47e0ea5b0b39b108f2c4f155918823a7ddf3cd44b4e26ede9171'
+            'ebb9bf0a0a3c7f108fff8b32ca79124d1da410fbfb320ad3298f3d92fabeb9ca81de6a4fefac344948a70c49771ffa3f0dc30de2ee6d6f61d158ed87a206a14e'
             '6e54ece7ec7022b3c9d94ad64bdf1017338da16c618966e8baf398e6f18f80f7b0576edf1d1da47ed77b96d577e4cbb2bb0156b0b11c183a0accf22654b0a2bb'
             'a17db33ba5d6114bd71d1b013adc8e5ca0c3cedf856301cba59f95dadf643d2ee0e5a2d7abb2daedd5ed7c45cdbe93c78527f4d962bedc54776bb21cfc7e8b0b'
-            '9f30236711434f88a83ec7d384e12730c4430559545219711daff27fdff8b9a615b983881b428432d5aa8e63d1da411ca71d23ac22e72f91e6e0d7e325cd097e')
+            )
 
 pkgdesc="A compatibility layer for running Windows programs - Staging branch with League Of Legends fixes"
 url="http://www.wine-staging.com"
@@ -123,17 +121,16 @@ install=wine.install
 
 prepare() {
   # Allow ccache to work
-  mv wine-$_pkgbasever $pkgname
+  mv wine-$_pkgbasever $pkgname                                                  
 
   # apply wine-staging patchset
-  pushd wine-staging-$_pkgbasever/patches
+  pushd wine-staging-$_pkgbasever/patches         
   ./patchinstall.sh DESTDIR="$srcdir/$pkgname" --all
   popd
 
   # Apply League Of Legends fixes
   pushd "$srcdir/$pkgname"
   patch -p1 -i "$srcdir/420CustomPatch1.diff"
-  patch -p1 -i "$srcdir/wine-lol-bug48138.diff"
   popd
 
   # Fix opencl header path
