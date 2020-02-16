@@ -17,8 +17,8 @@ pkgrel=1
 
 _pkgbasever=${pkgver/rc/-rc}
 
-source=(https://dl.winehq.org/wine/source/5.x/wine-$_pkgbasever.tar.xz                                                  
-        "wine-staging-v$_pkgbasever.tar.gz::https://github.com/wine-staging/wine-staging/archive/v$_pkgbasever.tar.gz"  
+source=(https://dl.winehq.org/wine/source/5.x/wine-$_pkgbasever.tar.xz
+        "wine-staging-v$_pkgbasever.tar.gz::https://github.com/wine-staging/wine-staging/archive/v$_pkgbasever.tar.gz"
         30-win32-aliases.conf
         420CustomPatch1.diff)
 sha512sums=('b842b533884f15a8fb71373258671d74aee997d9ed9ee0fb36f945cd2006b494f6cc6c91a8ca47e0ea5b0b39b108f2c4f155918823a7ddf3cd44b4e26ede9171'
@@ -121,10 +121,10 @@ install=wine.install
 
 prepare() {
   # Allow ccache to work
-  mv wine-$_pkgbasever $pkgname                                                  
+  mv wine-$_pkgbasever $pkgname
 
   # apply wine-staging patchset
-  pushd wine-staging-$_pkgbasever/patches         
+  pushd wine-staging-$_pkgbasever/patches
   ./patchinstall.sh DESTDIR="$srcdir/$pkgname" --all
   popd
 
