@@ -24,8 +24,7 @@ source=(https://dl.winehq.org/wine/source/5.x/wine-$_pkgbasever.tar.xz
 sha512sums=('b842b533884f15a8fb71373258671d74aee997d9ed9ee0fb36f945cd2006b494f6cc6c91a8ca47e0ea5b0b39b108f2c4f155918823a7ddf3cd44b4e26ede9171'
             'ebb9bf0a0a3c7f108fff8b32ca79124d1da410fbfb320ad3298f3d92fabeb9ca81de6a4fefac344948a70c49771ffa3f0dc30de2ee6d6f61d158ed87a206a14e'
             '6e54ece7ec7022b3c9d94ad64bdf1017338da16c618966e8baf398e6f18f80f7b0576edf1d1da47ed77b96d577e4cbb2bb0156b0b11c183a0accf22654b0a2bb'
-            'a17db33ba5d6114bd71d1b013adc8e5ca0c3cedf856301cba59f95dadf643d2ee0e5a2d7abb2daedd5ed7c45cdbe93c78527f4d962bedc54776bb21cfc7e8b0b'
-            )
+            'a17db33ba5d6114bd71d1b013adc8e5ca0c3cedf856301cba59f95dadf643d2ee0e5a2d7abb2daedd5ed7c45cdbe93c78527f4d962bedc54776bb21cfc7e8b0b')
 
 pkgdesc="A compatibility layer for running Windows programs - Staging branch with League Of Legends fixes"
 url="http://www.wine-staging.com"
