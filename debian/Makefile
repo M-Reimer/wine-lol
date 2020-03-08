@@ -1,6 +1,6 @@
 
-PKGPATH?=
-wine_VERSION=5.1-1
+PKGPATH?=../repo
+wine_VERSION=5.3-1
 glibc_VERSION=2.31-1
 
 wine_NAME=wine-lol
@@ -49,5 +49,5 @@ wine glibc:
 	sed -i 's/$$(VERSION)/$($@_VERSION)/' "build/$@/DEBIAN/control"
 	sed -i 's/$$(GLIBC_VERSION)/$(glibc_VERSION)/' "build/$@/DEBIAN/control"
 
-# Create the actual debial package
+# Create the actual Debian package
 	dpkg-deb --root-owner-group --build "build/$@" $(DEBPATH)
