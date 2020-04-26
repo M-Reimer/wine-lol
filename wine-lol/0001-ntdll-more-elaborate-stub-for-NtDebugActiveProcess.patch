@@ -1,0 +1,59 @@
+From 613a949289a479ad3f9dff4c4d8f0b05d13ed329 Mon Sep 17 00:00:00 2001
+From: David Torok <dt@zeroitlab.com>
+Date: Thu, 9 Jan 2020 20:35:46 +0100
+Subject: [PATCH] ntdll: more elaborate stub for NtDebugActiveProcess
+
+---
+ dlls/ntdll/ntdll.spec |  4 ++--
+ dlls/ntdll/process.c  | 13 +++++++++++++
+ 2 files changed, 15 insertions(+), 2 deletions(-)
+
+diff --git a/dlls/ntdll/ntdll.spec b/dlls/ntdll/ntdll.spec
+index 44bbdcefb2..ec7394168c 100644
+--- a/dlls/ntdll/ntdll.spec
++++ b/dlls/ntdll/ntdll.spec
+@@ -188,7 +188,7 @@
+ @ stub NtCreateToken
+ # @ stub NtCreateWaitablePort
+ @ stdcall -arch=win32,arm64 NtCurrentTeb()
+-# @ stub NtDebugActiveProcess
++@ stdcall NtDebugActiveProcess(long long)
+ # @ stub NtDebugContinue
+ @ stdcall NtDelayExecution(long ptr)
+ @ stdcall NtDeleteAtom(long)
+@@ -1153,7 +1153,7 @@
+ @ stdcall -private ZwCreateTimer(ptr long ptr long) NtCreateTimer
+ @ stub ZwCreateToken
+ # @ stub ZwCreateWaitablePort
+-# @ stub ZwDebugActiveProcess
++@ stdcall -private ZwDebugActiveProcess(long long) NtDebugActiveProcess
+ # @ stub ZwDebugContinue
+ @ stdcall -private ZwDelayExecution(long ptr) NtDelayExecution
+ @ stdcall -private ZwDeleteAtom(long) NtDeleteAtom
+diff --git a/dlls/ntdll/process.c b/dlls/ntdll/process.c
+index eacb15c185..f0970cc9fe 100644
+--- a/dlls/ntdll/process.c
++++ b/dlls/ntdll/process.c
+@@ -215,6 +215,19 @@ static void fill_VM_COUNTERS(VM_COUNTERS* pvmi)
+ 
+ #endif
+ 
++/******************************************************************************
++*  NtDebugActiveProcess                         [NTDLL.@]
++*  ZwDebugActiveProcess                         [NTDLL.@]
++*
++*/
++NTSTATUS WINAPI NtDebugActiveProcess(
++    IN HANDLE ProcessHandle,
++    IN HANDLE DebugObjectHandle)
++{
++    FIXME("NtDebugActiveProcess");
++    return STATUS_SUCCESS;
++}
++
+ /******************************************************************************
+ *  NtQueryInformationProcess		[NTDLL.@]
+ *  ZwQueryInformationProcess		[NTDLL.@]
+-- 
+2.24.1
+
