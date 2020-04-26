@@ -1,0 +1,114 @@
+From 627d4a57de01d9771986c9bca1913e9698b894bc Mon Sep 17 00:00:00 2001
+From: Andrew Wesie <awesie@gmail.com>
+Date: Thu, 23 Apr 2020 22:10:16 -0500
+Subject: [PATCH 1/2] ntdll: Stub SystemModuleInformation and
+ SystemModuleInformationEx.
+
+Signed-off-by: Andrew Wesie <awesie@gmail.com>
+---
+ dlls/ntdll/nt.c    | 61 +++++++++++++++++++++++++++++++++++++++++++---
+ include/winternl.h |  9 +++++++
+ 2 files changed, 67 insertions(+), 3 deletions(-)
+
+diff --git a/dlls/ntdll/nt.c b/dlls/ntdll/nt.c
+index 6c95517e79..174543bb89 100644
+--- a/dlls/ntdll/nt.c
++++ b/dlls/ntdll/nt.c
+@@ -2546,6 +2546,16 @@ BOOLEAN WINAPI RtlIsProcessorFeaturePresent( UINT feature )
+     return feature < PROCESSOR_FEATURE_MAX && user_shared_data->ProcessorFeatures[feature];
+ }
+ 
++static void fake_ntoskrnl_system_module( SYSTEM_MODULE* sm )
++{
++    static char ntoskrnl_path[] = "\\SystemRoot\\system32\\ntoskrnl.exe";
++    char *sep;
++    memset(sm, 0, sizeof(*sm)); /* FIXME */
++    strcpy((char *)sm->Name, ntoskrnl_path);
++    sep = strrchr((char *)sm->Name, '\\');
++    sm->NameOffset = sep == NULL ? 0 : sep - (char *)sm->Name + 1;
++}
++
+ /******************************************************************************
+  * NtQuerySystemInformation [NTDLL.@]
+  * ZwQuerySystemInformation [NTDLL.@]
+@@ -2869,9 +2879,54 @@ NTSTATUS WINAPI NtQuerySystemInformation(
+         }
+         break;
+     case SystemModuleInformation:
+-        /* FIXME: should be system-wide */
+-        if (!SystemInformation) ret = STATUS_ACCESS_VIOLATION;
+-        else ret = LdrQueryProcessModuleInformation( SystemInformation, Length, &len );
++        /* Whether this returns user modules depends on the Windows version. */
++        len = FIELD_OFFSET( SYSTEM_MODULE_INFORMATION, Modules[1] );
++        if (Length < len)
++        {
++            ret = STATUS_INFO_LENGTH_MISMATCH;
++        }
++        else if (!SystemInformation)
++        {
++            ret = STATUS_ACCESS_VIOLATION;
++        }
++        else
++        {
++            SYSTEM_MODULE_INFORMATION *smi = SystemInformation;
++            FIXME("info_class SystemModuleInformation stub!\n");
++
++            smi->ModulesCount = 1;
++            fake_ntoskrnl_system_module(&smi->Modules[0]);
++            ret = STATUS_SUCCESS;
++        }
++        break;
++    case SystemModuleInformationEx:
++        /* Whether this returns user modules depends on the Windows version. */
++        /* Length is sizeof(SYSTEM_MODULE_INFORMATION_EX) * (1 + number modules) */
++        len = sizeof(SYSTEM_MODULE_INFORMATION_EX) * 2;
++        if (Length < len)
++        {
++            ret = STATUS_INFO_LENGTH_MISMATCH;
++        }
++        else if (!SystemInformation)
++        {
++            ret = STATUS_ACCESS_VIOLATION;
++        }
++        else
++        {
++            SYSTEM_MODULE_INFORMATION_EX *p = SystemInformation;
++            FIXME("info_class SystemModuleInformationEx stub!\n");
++
++            p->NextOffset = sizeof(*p);
++            fake_ntoskrnl_system_module(&p->BaseInfo);
++            p->ImageCheckSum = 0; /* FIXME */
++            p->TimeDateStamp = 0;
++            p->DefaultBase = NULL;
++            p++;
++
++            /* Terminating entry has NextOffset == 0 */
++            memset(p, 0, sizeof(*p));
++            ret = STATUS_SUCCESS;
++        }
+         break;
+     case SystemHandleInformation:
+         {
+diff --git a/include/winternl.h b/include/winternl.h
+index f36419da78..8740d532b3 100644
+--- a/include/winternl.h
++++ b/include/winternl.h
+@@ -2418,6 +2418,15 @@ typedef struct _SYSTEM_MODULE_INFORMATION
+     SYSTEM_MODULE       Modules[1]; /* FIXME: should be Modules[0] */
+ } SYSTEM_MODULE_INFORMATION, *PSYSTEM_MODULE_INFORMATION;
+ 
++typedef struct _SYSTEM_MODULE_INFORMATION_EX
++{
++    USHORT NextOffset;
++    SYSTEM_MODULE BaseInfo;
++    ULONG ImageCheckSum;
++    ULONG TimeDateStamp;
++    void *DefaultBase;
++} SYSTEM_MODULE_INFORMATION_EX, *PSYSTEM_MODULE_INFORMATION_EX;
++
+ #define THREAD_CREATE_FLAGS_CREATE_SUSPENDED        0x00000001
+ #define THREAD_CREATE_FLAGS_SKIP_THREAD_ATTACH      0x00000002
+ #define THREAD_CREATE_FLAGS_HIDE_FROM_DEBUGGER      0x00000004
+-- 
+2.24.2 (Apple Git-127)
+

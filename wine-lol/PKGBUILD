@@ -21,12 +21,14 @@ source=(https://dl.winehq.org/wine/source/5.x/wine-$_pkgbasever.tar.xz
         "wine-staging-v$_pkgbasever.tar.gz::https://github.com/wine-staging/wine-staging/archive/v$_pkgbasever.tar.gz"
         30-win32-aliases.conf
         420CustomPatch1.diff
-        sanity_checks_in_queue_rawinput_message.patch)
+        sanity_checks_in_queue_rawinput_message.patch
+        0001-ntdll-Stub-SystemModuleInformation-and-SystemModuleI.patch)
 sha512sums=('b12b0eff228ecd783fec8bf91f97e4387125226b172046d800e1fbffa303ceca32f1f647b9e8ceb24d303c23eb57188be14ddd8ba5fc04ba781a69186fbe6be4'
             '7ddf5699834a6e04b094a7cae008175c874415d22554bac38176f3121b9533071ef610f8b5a0dd3ce3e4adf8a9d4ac214aa1cee7634959c5150b66fbb74710b7'
             '6e54ece7ec7022b3c9d94ad64bdf1017338da16c618966e8baf398e6f18f80f7b0576edf1d1da47ed77b96d577e4cbb2bb0156b0b11c183a0accf22654b0a2bb'
             'a17db33ba5d6114bd71d1b013adc8e5ca0c3cedf856301cba59f95dadf643d2ee0e5a2d7abb2daedd5ed7c45cdbe93c78527f4d962bedc54776bb21cfc7e8b0b'
-            '3c444aeeeaa8f3f0480b4ada71a8939f2c0ec9b0795ac1602d91ec42e534500c0a21cc2a79d4cacb30899d0e2853202c2a66ccfa79a8f1a41ebabe3b69ac4fd4')
+            '3c444aeeeaa8f3f0480b4ada71a8939f2c0ec9b0795ac1602d91ec42e534500c0a21cc2a79d4cacb30899d0e2853202c2a66ccfa79a8f1a41ebabe3b69ac4fd4'
+            '464201fd80f7a8a7d95c47b636b3dd77f7e6bea2fd8c19f4abe8d2dafc93072beeafbe5290068b72f897b9528771992105662e1e8fab2ddb4098c47e9c458897')
 
 pkgdesc="A compatibility layer for running Windows programs - Staging branch with League Of Legends fixes"
 url="http://www.wine-staging.com"
@@ -126,13 +128,14 @@ prepare() {
 
   # apply wine-staging patchset
   pushd wine-staging-$_pkgbasever/patches
-  ./patchinstall.sh DESTDIR="$srcdir/$pkgname" --all
+  ./patchinstall.sh DESTDIR="$srcdir/$pkgname" --all -W ntdll-SystemModuleInformation
   popd
 
   # Apply League Of Legends fixes
   pushd "$srcdir/$pkgname"
   patch -p1 -i "$srcdir/420CustomPatch1.diff"
   patch -p1 -i "$srcdir/sanity_checks_in_queue_rawinput_message.patch"
+  patch -p1 -i "$srcdir/0001-ntdll-Stub-SystemModuleInformation-and-SystemModuleI.patch"
   popd
 
   # Fix opencl header path
