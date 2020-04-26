@@ -1,0 +1,19 @@
+--- wine/server/queue.c	2020-04-13 16:26:27.465692013 +0200
++++ esync-patch/server/queue.c	2020-04-13 16:30:11.009590918 +0200
+@@ -1834,12 +1834,15 @@
+         (raw_msg->desktop && desktop != raw_msg->desktop))
+         goto done;
+ 
++    if (!device->target && !desktop->foreground_input)
++        goto done;
++
+     if (!(thread = get_window_thread( device->target ? device->target : desktop->foreground_input->active )) ||
+         process != thread->process)
+         goto done;
+ 
+     /* FIXME: Implement RIDEV_INPUTSINK */
+-    if (!(foreground = get_window_thread( desktop->foreground_input->active )) ||
++    if (!desktop->foreground_input || !(foreground = get_window_thread( desktop->foreground_input->active )) ||
+         thread->process != foreground->process)
+         goto done;
+ 
