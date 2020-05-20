@@ -16,3 +16,10 @@ Short overview about this repository:
 - **debian** contains the build script to make Debian packages from the finished Arch Linux packages (so the binaries have to be built on Arch Linux! Set up a VM if you want to build Debian packages on your own)
 - **repo-make.conf** allows to autobuild the packages on a dedicated build VM
 - **update-aur.sh** is used by me to distribute the files from "wine-lol" and "wine-lol-glibc" to their individual GIT repositories on AUR
+
+Contributor notes
+-----------------
+
+Please keep in mind that the goal of this repository is **not** to keep a Wine version with the LoL patches up-to-date with the upstream Wine version but to keep **a** Wine version stable and running which allows to play LoL. It is absolutely OK if this Wine version is "old".
+
+Or in other words: Pull requests for updating Wine are OK if you can provide at least one reason why this new Wine version improves LoL gameplay. "There is a newer version" is no valid reason for updating the Wine version here.
