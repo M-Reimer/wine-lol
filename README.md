@@ -22,6 +22,6 @@ Contributor notes
 
 Please keep in mind that the goal of this repository is **not** to keep a Wine version with the LoL patches up-to-date with the upstream Wine version but to keep **a** Wine version stable and running which allows to play LoL. It is absolutely OK if this Wine version is "old".
 
-In the past, newer Wine versions have caused problems with LoL which required several updates to get them finally sourted out again. Updating Wine here also means that all the AUR users get Wine offered for recompile which may take up to two hours depending on the system used for building.
+In the past, newer Wine versions have caused problems with LoL which required several updates to get them finally sorted out again. Updating Wine here also means that all the AUR users get Wine offered for recompile which may take up to two hours depending on the system used for building.
 
 Or in other words: Pull requests for updating Wine are OK if you can provide at least one reason why this new Wine version improves LoL gameplay. "There is a newer version" is no valid reason for updating the Wine version here.
