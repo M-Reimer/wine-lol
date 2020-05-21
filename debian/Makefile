@@ -1,6 +1,6 @@
 
 PKGPATH?=../repo
-wine_VERSION=5.3-1
+wine_VERSION=5.6-1
 glibc_VERSION=2.31-1
 
 wine_NAME=wine-lol
@@ -38,6 +38,9 @@ wine glibc: DEBPATH=$($@_NAME)_$($@_VERSION)_i386.deb
 wine glibc:
 # Extract Arch package to build directory. Only take the opt/* part of it
 	bsdtar -vxf "$(PKGPATH)/$(ARCHPKG)" --include='opt/*' -C "build/$@"
+
+# Blacklist libcrypt*.so* for Debian/Ubuntu as they use libcrypt1
+	rm -f build/glibc/opt/wine-lol/lib32/libcrypt*.so*
 
 # Create the md5sums file
 	pushd "build/$@"; find * -type f ! -path 'DEBIAN/*' -exec md5sum '{}' \; > "DEBIAN/md5sums"
