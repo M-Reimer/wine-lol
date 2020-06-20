@@ -22,7 +22,7 @@ Contributor notes about Wine version updates
 
 Please keep in mind that the goal of this repository is **not** to keep a Wine version with the LoL patches up-to-date with the upstream Wine version but to keep **a** Wine version stable and running which allows to play LoL. It is absolutely OK if this Wine version is "old".
 
-he goal is to play LoL in a stable and somewhat performant way on Linux. If this goal can be reached with a pretty old Wine version, then no update is needed! All that matters is the result!
+The goal is to play LoL in a stable and somewhat performant way on Linux. If this goal can be reached with a pretty old Wine version, then no update is needed! All that matters is the result!
 
 This leads us to a few points you should consider if you want to see an updated version here:
 1. I have no time to test new versions. So it's you who has to do this! This means that a **new version** can not be requested at all in an Issue but **only with a Pull Request**!
