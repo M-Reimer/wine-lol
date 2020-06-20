@@ -17,11 +17,13 @@ Short overview about this repository:
 - **repo-make.conf** allows to autobuild the packages on a dedicated build VM
 - **update-aur.sh** is used by me to distribute the files from "wine-lol" and "wine-lol-glibc" to their individual GIT repositories on AUR
 
-Contributor notes
------------------
+Contributor notes about Wine version updates
+--------------------------------------------
 
 Please keep in mind that the goal of this repository is **not** to keep a Wine version with the LoL patches up-to-date with the upstream Wine version but to keep **a** Wine version stable and running which allows to play LoL. It is absolutely OK if this Wine version is "old".
 
-In the past, newer Wine versions have caused problems with LoL which required several updates to get them finally sorted out again. Updating Wine here also means that all the AUR users get Wine offered for recompile which may take up to two hours depending on the system used for building.
+he goal is to play LoL in a stable and somewhat performant way on Linux. If this goal can be reached with a pretty old Wine version, then no update is needed! All that matters is the result!
 
-Or in other words: Pull requests for updating Wine are OK if you can provide at least one reason why this new Wine version improves LoL gameplay. "There is a newer version" is no valid reason for updating the Wine version here.
+This leads us to a few points you should consider if you want to see an updated version here:
+1. I have no time to test new versions. So it's you who has to do this! This means that a **new version** can not be requested at all in an Issue but **only with a Pull Request**!
+2. You have to name **at least one improvement** in your Pull Request that this version provides for playing LoL on Linux. If a new version just works as well as the old version, then there is no need to update!
