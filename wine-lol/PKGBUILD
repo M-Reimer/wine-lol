@@ -12,26 +12,69 @@
 # Primary bug report: https://bugs.winehq.org/show_bug.cgi?id=47198
 
 pkgname=wine-lol
-# Note: We are forced to use Wine 5.6 until this bug is fixed:
-#       https://bugs.winehq.org/show_bug.cgi?id=49025
-pkgver=5.6
+pkgver=5.15
+_staging_revision='.2'
 pkgrel=1
 
 _pkgbasever=${pkgver/rc/-rc}
 
-# TODO: Remove 0005-server-Broadcast-rawinput-message-if-request-flag-is.patch
-#       here and in prepare() for wine >= 5.7
-#       Used to fix https://bugs.winehq.org/show_bug.cgi?id=48946
+
 source=(https://dl.winehq.org/wine/source/5.x/wine-$_pkgbasever.tar.xz
-        "wine-staging-v$_pkgbasever.tar.gz::https://github.com/wine-staging/wine-staging/archive/v$_pkgbasever.tar.gz"
-        https://raw.githubusercontent.com/wine-staging/wine-staging/8d4d0a840e6ce434483edd81acb3be90fd734e44/patches/user32-rawinput-mouse/0005-server-Broadcast-rawinput-message-if-request-flag-is.patch
+        "wine-staging-v$_pkgbasever$_staging_revision.tar.gz::https://github.com/wine-staging/wine-staging/archive/v$_pkgbasever$_staging_revision.tar.gz"
         30-win32-aliases.conf
-        wine-lol-bug-47198-fix.patch)
-sha512sums=('b12b0eff228ecd783fec8bf91f97e4387125226b172046d800e1fbffa303ceca32f1f647b9e8ceb24d303c23eb57188be14ddd8ba5fc04ba781a69186fbe6be4'
-            '7ddf5699834a6e04b094a7cae008175c874415d22554bac38176f3121b9533071ef610f8b5a0dd3ce3e4adf8a9d4ac214aa1cee7634959c5150b66fbb74710b7'
-            '13ce85885270990f8f2cf6c1f872fc855b3caf5bc1de01022caf0b05dd6957e55391cd8dcd15ff0cc18cf3035851a8289a2e12e17f2f50b626b68afd10e3f315'
+        "$pkgname-bug-47198-fix.patch"
+
+        # Esync/Fsync killer - mainline reverts
+        'tk-glitch-esync-reverts-5.15.patch'
+        # Apply fixed d8d6a6b2e639d2e29e166a3faf988b81388ae191 - server: Partially implement JobObjectBasicAccountingInformation.
+        https://raw.githubusercontent.com/Frogging-Family/wine-tkg-git/master/wine-tkg-git/wine-tkg-patches/hotfixes/01150d7f/d8d6a6b2e639d2e29e166a3faf988b81388ae191.mypatch
+        # staging unbreak - #1
+        https://raw.githubusercontent.com/Frogging-Family/wine-tkg-git/master/wine-tkg-git/wine-tkg-patches/hotfixes/01150d7f/06877e55b1100cc49d3726e9a70f31c4dfbe66f8-70.mystagingpatch
+        # staging unbreak - #2
+        https://raw.githubusercontent.com/Frogging-Family/wine-tkg-git/master/wine-tkg-git/wine-tkg-patches/hotfixes/01150d7f/934a09585a15e8491e422b43624ffe632b02bd3c-3.mystagingpatch
+        # Fixups for staging's ntdll-ForceBottomUpAlloc
+        https://raw.githubusercontent.com/Frogging-Family/wine-tkg-git/master/wine-tkg-git/wine-tkg-patches/hotfixes/01150d7f/ntdll-ForceBottomUpAlloc-97fbe3f.mystagingpatch
+        # 3a9edf9a hotfixes for fs hack, then no fs hack paths
+        https://raw.githubusercontent.com/Frogging-Family/wine-tkg-git/master/wine-tkg-git/wine-tkg-patches/hotfixes/01150d7f/001-3a9edf9aad43c3e8ba724571da5381f821f1dc56.myearlypatch
+        https://raw.githubusercontent.com/Frogging-Family/wine-tkg-git/master/wine-tkg-git/wine-tkg-patches/hotfixes/01150d7f/002-e0e3b6bc91f7db956e3a66f2938eea45d4055a39.myearlypatch
+        https://raw.githubusercontent.com/Frogging-Family/wine-tkg-git/master/wine-tkg-git/wine-tkg-patches/hotfixes/01150d7f/003-1e7378d8-447bce41.myearlypatch
+        # Import hotfix-rebased 01143089 - Fixes Origin
+        https://raw.githubusercontent.com/Frogging-Family/wine-tkg-git/master/wine-tkg-git/wine-tkg-patches/hotfixes/01150d7f/origin_3078f10d_fix.mypatch
+        # staging no protonify fixup
+        https://raw.githubusercontent.com/Frogging-Family/wine-tkg-git/master/wine-tkg-git/wine-tkg-patches/hotfixes/01150d7f/8898a695-staging-noprotonify-fixup.mypatch
+        # Staging hotfix for staging esync no fs hack path on f904ca32a
+        https://raw.githubusercontent.com/Frogging-Family/wine-tkg-git/master/wine-tkg-git/wine-tkg-patches/hotfixes/01150d7f/staging-rawinput-esync-nofshack-fix-2.mystagingpatch
+        # Import hotfix-rebased 0720c6cf & 2b76b9f2
+        https://raw.githubusercontent.com/Frogging-Family/wine-tkg-git/master/wine-tkg-git/wine-tkg-patches/hotfixes/01150d7f/001-SMBIOS-0720c6cf.mypatch
+        # Import hotfix-rebased d29c33a3 & 734a7120 & f7895ef2
+        https://raw.githubusercontent.com/Frogging-Family/wine-tkg-git/master/wine-tkg-git/wine-tkg-patches/hotfixes/01150d7f/002-SMBIOS-d29c33a3.mypatch
+        # Import hotfix-rebased 8622eb32
+        https://raw.githubusercontent.com/Frogging-Family/wine-tkg-git/master/wine-tkg-git/wine-tkg-patches/hotfixes/01150d7f/001-8622eb326fb8120fc038e27947e61677d4124f15-staging.mypatch
+        # fsync - experimental replacement for esync introduced with Proton 4.11-1
+        fsync-staging-$pkgver.patch::https://raw.githubusercontent.com/Frogging-Family/wine-tkg-git/d140e3c217799ae0b8d352c9cc2c15d911e2baf9/wine-tkg-git/wine-tkg-patches/proton/fsync-staging.patch
+        https://raw.githubusercontent.com/Frogging-Family/wine-tkg-git/d140e3c217799ae0b8d352c9cc2c15d911e2baf9/wine-tkg-git/wine-tkg-patches/proton/fsync-staging-no_alloc_handle.patch)
+
+sha512sums=('90baf7df915cf1ce88022a4aebe4a6975b4b0defcc043a0c6738fefb9b853e0bfbcc645c39e33cdbb20673fab5df7561ab5b55e38a4e0a68907912a80e556ae3'
+            'd87209373715707a3c36ffe907bdad89693d9dc693b0d732a5a432df612fb0b043eef7c7064868fedc8b5f02ad430d31efc2382df324277bfa1ff61867641590'
             '6e54ece7ec7022b3c9d94ad64bdf1017338da16c618966e8baf398e6f18f80f7b0576edf1d1da47ed77b96d577e4cbb2bb0156b0b11c183a0accf22654b0a2bb'
-            'a17db33ba5d6114bd71d1b013adc8e5ca0c3cedf856301cba59f95dadf643d2ee0e5a2d7abb2daedd5ed7c45cdbe93c78527f4d962bedc54776bb21cfc7e8b0b')
+            'a6f8079da8727cc5b23e9895b41e2010b00e3268a9152aaaf03ab801f1b2e1d6a3e5860de69a0a8f31e983f585a14a42fb3d9b6e68aacc4749ee91c0fdb2794f'
+            '14120404897ede81c1fa82ae84225fb8465650a458297888f1ee36bdebe06b8d4c565beafb0625f93708523c354c9384dfcabad3d91514279121cc7ab7dab3df'
+            'ca50da79a2087be20a6769222edc815160463516630191acd6764f4dcb161a9272839eefdcedd97e48af7d8cc961d04a4f3dc7b3d04f0d33db222748dee699c3'
+            '298c92bdc0abe75e29c0aaae1ace0649b251736dc6e665ec7e7f595bb51291607dc33133a84904282eddcfab0bb07807f2a40c1cc84a748f457ab8a113f952b2'
+            '8e1c71a27da35ccab9a372e50404e70c908f8cc3e804804f7ae9030826fd260f154a41613646e17c01c403f2bd39e12c1e5491709640c9ea6ecf75ca6fa7698f'
+            '93730fdf485de5f88536fbce3083980370d8bb190054af00cd149fcf32d0bcbfc83afca1857cf6d47a32060e4b36f394ed6fa8454c79dccfce676439c5c0f464'
+            'c347dcaef93e757dcbeb50d35f2e482828bea116a03fd1ac9d136c8fa1be8e5dea1dd66c5c82c16a8263927b9b53b20701cfd716e5541bd978ccb46ab99fcb1e'
+            'c538ec4b8b34330c937d2113609795cbf009438d51a1e8b4ad1f427e75aa90d575d6f8907dff4e25ab8cdf8eddce5f12038aa1ebc2ce5b8e3e5ca0c54039ea50'
+            '08d63de79a6149535e90ba09410403506754c1f14ce9f078094ece622e8de5ad3e8419c18cda2ca9c492419b0a2c8e726cd7b9372b559e27a4b6d360b5d9e78b'
+            '6b5891ee50c9ef771e69f845e9838089b3aa142677a3582f902646f92be0d5bd5f119a7d28db5b2ba1c2d3ff15a38b19ea4c3648c4e911d3ad9b8b45a3087271'
+            '713dc3cb61df189b4cadc976cff5271c9ccee0a2a32bf6b608ae5bf976f14db76c9f3759b8efcc8d0b07d27c78318ab033d8157942372cafc7787dc090e798f4'
+            '5b11ba3a212c107ed626c6ff8a0ae28c5e497f11f094d80f214b06c6ad02c761970d12d1765b124cbe5dedaa9eb3cf8bfd240269d358edd2bd4231b6339a8873'
+            '227d270f2f2fd12ee511aad5ae4205fb63641d6e86628641da1f8be68a4b04e81a4d8d4bef089dd9768d5a68e830ed6cb7d1b6ba5183b7cd701cab4fa3445f33'
+            '39951c0eb3e74020cda29b913de6edd8f100bff4577325557d9b01349ab8846036d39bc1e64febb399f31521e38e309feea80c035379a8260fab2aab485f3a44'
+            '91d77b33731ba30fa92acc6b6a75fd4852e4d09d505a73123e584b530ccea7387de5b21811ee24cf2aab7ba920649b4527deeaf324fecba6bb08efffecafa4d0'
+            'debb220bd72bdc9ee6e41a4773dc60f800b286ff3a137c239916c143e4cec7c3fb71714386fa8801f0f0d5982405fc2d036e591738c82cb08d1842170af44ca2'
+            'd8fffe4c9ca03a051d6a80d028132519a89dfe7016ca53a7e7a040c6f11538a12a9ccd978c979b3740eb899bb262cd2c564904e60013a04fe1b794d16590f64e')
+
 
 pkgdesc="A compatibility layer for running Windows programs - Staging branch with League Of Legends fixes"
 url="http://www.wine-staging.com"
@@ -129,16 +172,42 @@ prepare() {
   # Allow ccache to work
   mv wine-$_pkgbasever $pkgname
 
-  # apply wine-staging patchset
-  pushd wine-staging-$_pkgbasever/patches
-  # Place updated patch
-  cp "$srcdir/0005-server-Broadcast-rawinput-message-if-request-flag-is.patch" user32-rawinput-mouse
-  ./patchinstall.sh DESTDIR="$srcdir/$pkgname" --all
+  # Apply Tk-Glitch Wine reverts and early patches
+  pushd "$srcdir/$pkgname"
+  patch -p1 -i "$srcdir/tk-glitch-esync-reverts-$pkgver.patch"
+  patch -p1 -i "$srcdir/001-3a9edf9aad43c3e8ba724571da5381f821f1dc56.myearlypatch"
+  patch -p1 -i "$srcdir/002-e0e3b6bc91f7db956e3a66f2938eea45d4055a39.myearlypatch"
+  patch -p1 -i "$srcdir/003-1e7378d8-447bce41.myearlypatch"
+  popd
+
+  # Apply Tk-Glitch staging patches
+  pushd wine-staging-$_pkgbasever$_staging_revision
+  patch -p1 -i "$srcdir/06877e55b1100cc49d3726e9a70f31c4dfbe66f8-70.mystagingpatch"
+  patch -p1 -i "$srcdir/934a09585a15e8491e422b43624ffe632b02bd3c-3.mystagingpatch"
+  patch -p1 -i "$srcdir/ntdll-ForceBottomUpAlloc-97fbe3f.mystagingpatch"
+  patch -p1 -i "$srcdir/staging-rawinput-esync-nofshack-fix-2.mystagingpatch"
+  popd
+
+  # Apply wine-staging patchset
+  pushd wine-staging-$_pkgbasever$_staging_revision/patches
+  ./patchinstall.sh DESTDIR="$srcdir/$pkgname" --all -W ntdll-SystemRoot_Symlink
+  popd
+
+  # Apply Tk-Glitch Wine patches
+  pushd "$srcdir/$pkgname"
+  patch -p1 -i "$srcdir/d8d6a6b2e639d2e29e166a3faf988b81388ae191.mypatch"
+  patch -p1 -i "$srcdir/origin_3078f10d_fix.mypatch"
+  patch -p1 -i "$srcdir/8898a695-staging-noprotonify-fixup.mypatch"
+  patch -p1 -i "$srcdir/001-SMBIOS-0720c6cf.mypatch"
+  patch -p1 -i "$srcdir/002-SMBIOS-d29c33a3.mypatch"
+  patch -p1 -i "$srcdir/001-8622eb326fb8120fc038e27947e61677d4124f15-staging.mypatch"
+  patch -p1 -i "$srcdir/fsync-staging-$pkgver.patch"
+  patch -p1 -i "$srcdir/fsync-staging-no_alloc_handle.patch"
   popd
 
   # Apply League Of Legends fixes
   pushd "$srcdir/$pkgname"
-  patch -p1 -i "$srcdir/wine-lol-bug-47198-fix.patch"
+  patch -p1 -i "$srcdir/$pkgname-bug-47198-fix.patch"
   popd
 
   # Fix opencl header path
@@ -152,10 +221,7 @@ build() {
   rm -rf $pkgname-{32,64}-build
   mkdir $pkgname-{32,64}-build
 
-  # https://bugs.winehq.org/show_bug.cgi?id=43530
-  # TODO: Remove -fcommon for wine >= 5.8
-  #       Used to work around gcc 10.1 build issue
-  export CFLAGS="${CFLAGS/-fno-plt/} -fcommon"
+  export CFLAGS="${CFLAGS/-fno-plt/}"
   export LDFLAGS="${LDFLAGS/,-z,now/}"
 
   # We need RPATH to point to the "lib32" in our prefix

@@ -1,9 +1,16 @@
-diff -U 3 -pr a/dlls/ntdll/thread.c b/dlls/ntdll/thread.c
---- a/dlls/ntdll/thread.c	2020-08-29 17:04:09.498850399 +0200
-+++ b/dlls/ntdll/thread.c	2020-08-29 17:05:37.801890998 +0200
-@@ -226,6 +226,77 @@ int __cdecl __wine_dbg_header( enum __wi
-     return unix_funcs->dbg_header( cls, channel, function );
+commit 65f18813c5ac47da99ffcd806eac1d7b98811b8b
+Author: Manuel Reimer <manuel.reimer@gmx.de>
+Date:   Mon Aug 24 23:43:42 2020 +0200
+
+    Update bug 47198 fix for wine 5.15
+
+diff --git a/dlls/ntdll/loader.c b/dlls/ntdll/loader.c
+index 6290cbc..8506fc1 100644
+--- a/dlls/ntdll/loader.c
++++ b/dlls/ntdll/loader.c
+@@ -3887,6 +3887,78 @@ BOOL WINAPI DllMain( HINSTANCE inst, DWORD reason, LPVOID reserved )
  }
+ 
  
 +#ifdef __i386__
 +#include <asm/ldt.h>
@@ -12,6 +19,7 @@ diff -U 3 -pr a/dlls/ntdll/thread.c b/dlls/ntdll/thread.c
 +#include <linux/seccomp.h>
 +#include <linux/unistd.h>
 +#include <sys/prctl.h>
++#include <sys/types.h>
 +#include <errno.h>
 +
 +static void sigsys_handler( int signal, siginfo_t *siginfo, void *sigcontext )
@@ -77,17 +85,16 @@ diff -U 3 -pr a/dlls/ntdll/thread.c b/dlls/ntdll/thread.c
 +
 +
  /***********************************************************************
-  *		__wine_dbg_output  (NTDLL.@)
+  *           __wine_process_init
   */
-@@ -430,6 +501,11 @@ TEB *thread_init(void)
-     unix_funcs->dbg_init();
-     unix_funcs->get_paths( &build_dir, &data_dir, &config_dir );
-     fill_cpu_info();
-+
+@@ -3909,6 +3981,10 @@ void __wine_process_init(void)
+     TEB *teb = NtCurrentTeb();
+     PEB *peb = teb->Peb;
+ 
 +#ifdef __i386__
-+   seccomp_init();
++    seccomp_init();
 +#endif
 +
-     return teb;
- }
- 
+     peb->LdrData            = &ldr;
+     peb->FastPebLock        = &peb_lock;
+     peb->TlsBitmap          = &tls_bitmap;
