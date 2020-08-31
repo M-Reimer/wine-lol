@@ -1,9 +1,10 @@
-diff -U 3 -pr a/dlls/ntdll/thread.c b/dlls/ntdll/thread.c
---- a/dlls/ntdll/thread.c	2020-08-29 17:04:09.498850399 +0200
-+++ b/dlls/ntdll/thread.c	2020-08-29 17:05:37.801890998 +0200
-@@ -226,6 +226,77 @@ int __cdecl __wine_dbg_header( enum __wi
-     return unix_funcs->dbg_header( cls, channel, function );
+diff --git a/dlls/ntdll/thread.c b/dlls/ntdll/thread.c
+index c5b2008e44..96ca266921 100644
+--- a/dlls/ntdll/thread.c
++++ b/dlls/ntdll/thread.c
+@@ -268,6 +268,77 @@ static void set_process_name( int argc, char *argv[] )
  }
+ 
  
 +#ifdef __i386__
 +#include <asm/ldt.h>
@@ -77,13 +78,12 @@ diff -U 3 -pr a/dlls/ntdll/thread.c b/dlls/ntdll/thread.c
 +
 +
  /***********************************************************************
-  *		__wine_dbg_output  (NTDLL.@)
-  */
-@@ -430,6 +501,11 @@ TEB *thread_init(void)
-     unix_funcs->dbg_init();
-     unix_funcs->get_paths( &build_dir, &data_dir, &config_dir );
+  *           thread_init
+  *
+@@ -370,6 +441,10 @@ TEB *thread_init(void)
+     __wine_user_shared_data();
      fill_cpu_info();
-+
+ 
 +#ifdef __i386__
 +   seccomp_init();
 +#endif
