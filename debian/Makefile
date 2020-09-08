@@ -1,7 +1,7 @@
 
 PKGPATH?=../repo
 wine_VERSION=5.6-1
-glibc_VERSION=2.31-1
+glibc_VERSION=2.32-2
 
 wine_NAME=wine-lol
 glibc_NAME=wine-lol-glibc
