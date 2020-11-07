@@ -90,6 +90,7 @@ makedepends=(autoconf ncurses bison perl fontforge flex
   ffmpeg
   samba
   opencl-headers
+  pkgconf
 )
 
 optdepends=(
