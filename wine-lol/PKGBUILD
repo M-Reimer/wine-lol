@@ -60,7 +60,7 @@ depends=(
   wine-lol-glibc
 )
 
-makedepends=(autoconf ncurses bison perl fontforge flex
+makedepends=(autoconf pkgconf ncurses bison perl fontforge flex
   'gcc>=4.5.0-2'
   giflib                lib32-giflib
   libpng                lib32-libpng
