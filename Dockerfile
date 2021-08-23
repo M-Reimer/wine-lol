@@ -50,7 +50,7 @@ FROM archlinux:latest
 RUN mkdir -p /wine-lol && chmod 777 -R wine-lol
 WORKDIR /wine-lol
 COPY --from=wine-builder /wine-builds/ /wine-lol/.
-CMD "cp" "-r" "/wine-lol/" "/wine-exports/."
+CMD "cp" "-r" "/wine-lol/." "/wine-exports/."
 
 
 
