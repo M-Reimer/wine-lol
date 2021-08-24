@@ -1,16 +1,5 @@
 Wine-LoL
 ========
-This repo tries to use a Dockerfile for compilation because VMs are hell;
----
-Simple walkthrough on how to build and export wine:
-1. Clone the master, then, in a terminal from the root directory, build it by running
-`docker build . -t wine-lol` (this will take a while as it's actually building).
-2. Then run the image you created a moment ago with a directory from your computer mounted as `/wine-exports` so docker can export the package:
-`docker run -v /directory/to/export/to:/wine-exports wine-lol` (this should only take a moment because it's already built)
-3. `/directory/to/export/to` will have the package that was just built.
-
-Back to the rest of the forked repo
----
 
 This repository contains build scripts to build wine-lol including the required wine-lol–glibc for Arch/Manjaro (with sync to AUR) and Debian based distributions (Ubuntu, Mint, SteamOS, ...).
 
@@ -36,3 +25,12 @@ Please keep in mind that the goal of this repository is **not** to keep a Wine v
 This leads us to a few points you should consider if you want to see an updated version here:
 1. I have no time to test new versions. So it's you who has to do this! This means that a **new version** can not be requested at all in an Issue but **only with a Pull Request**!
 2. You have to name **at least one improvement** in your Pull Request that this version provides for playing LoL on Linux. If a new version just works as well as the old version, then there is no need to update!
+
+Contributer notes on building using Docker
+---
+Simple steps to build with Docker on **any** distro and export wine:
+1. Clone master, then, in a terminal from the root directory, build it by running
+`docker build . -t wine-lol` (this will take a while as it's actually building).
+2. Then run the image you created a moment ago with a directory from your computer mounted as `/wine-exports` so docker can export the packages:
+`docker run -v /directory/to/export/to:/wine-exports wine-lol` (this only takes a moment because it's already built)
+3. `/directory/to/export/to` will have the package that you just built.
