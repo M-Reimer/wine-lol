@@ -45,11 +45,12 @@ RUN sudo -u nobody bash -c 'makepkg --syncdeps'
 # Copy to build folder
 RUN cp ./wine-lol-*.pkg.tar.zst /wine-builds/.
 
-# Third stage, copy the package to a separate folder (just here for caching tbh)
+# Third stage, copy the package to a separate folder
 FROM archlinux:latest
 RUN mkdir -p /wine-lol && chmod 777 -R wine-lol
 WORKDIR /wine-lol
 COPY --from=wine-builder /wine-builds/ /wine-lol/.
+# Lastly, the magic command, where we export our built wine package to the mounted directory
 CMD "cp" "-r" "/wine-lol/." "/wine-exports/."
 
 
