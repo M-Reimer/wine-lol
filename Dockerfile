@@ -42,8 +42,10 @@ RUN chmod 777 -R /wine-lol
 RUN mkdir -p /wine-builds
 # Build wine
 RUN sudo -u nobody bash -c 'makepkg --syncdeps'
-# Copy to build folder
+# Copy wine to the build folder
 RUN cp ./wine-lol-*.pkg.tar.zst /wine-builds/.
+# Also copy glibc package?
+RUN cp /glibc-builds/wine-lol-glibc-*.pkg.tar.zst /wine-builds/.
 
 # Third stage, copy the package to a separate folder
 FROM archlinux:latest
