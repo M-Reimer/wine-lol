@@ -5,6 +5,8 @@ FROM archlinux:latest as glibc-builder
 RUN pacman -Sy --noconfirm --needed sudo base-devel 
 # Dependencies for wine-lol-glibc
 RUN pacman -Sy --noconfirm --needed git gd lib32-gcc-libs python
+# make makepkg multithreaded
+RUN echo 'MAKEFLAGS="-j$(expr $(nproc) \+ 1)"' >> /etc/makepkg.conf
 
 # copy source for glibc
 WORKDIR /wine-lol-glibc
@@ -33,6 +35,8 @@ RUN pacman -Sy --noconfirm --needed giflib lib32-giflib libpng lib32-libpng libl
 RUN mkdir -p /glibc-builds
 COPY --from=glibc-builder /glibc-builds/ /glibc-builds/.
 RUN pacman -U --noconfirm /glibc-builds/wine-lol-glibc-*.pkg.tar.zst
+# make makepkg multithreaded (again)
+RUN echo 'MAKEFLAGS="-j$(expr $(nproc) \+ 1)"' >> /etc/makepkg.conf
 
 # Copy source for wine
 WORKDIR /wine-lol
