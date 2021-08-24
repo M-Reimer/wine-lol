@@ -58,10 +58,3 @@ WORKDIR /wine-lol
 COPY --from=wine-builder /wine-builds/ /wine-lol/.
 # Lastly, the magic command, where we export our built wine package to the mounted directory
 CMD "cp" "-r" "/wine-lol/." "/wine-exports/."
-
-
-
-
-
-
-
