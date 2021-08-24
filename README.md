@@ -1,5 +1,16 @@
 Wine-LoL
 ========
+This repo tries to use a Dockerfile for compilation because VMs are hell;
+---
+Simple walkthrough on how to build and export wine:
+1. Clone the master, then, in a terminal from the root directory, build it by running
+`docker build . -t wine-lol` (this will take a while as it's actually building).
+2. Then run the image you created a moment ago with a directory from your computer mounted as `/wine-exports` so docker can export the package:
+`docker run -v /directory/to/export/to:/wine-exports wine-lol` (this should only take a moment because it's already built)
+3. `/directory/to/export/to` will have the package that was just built.
+
+Back to the rest of the forked repo
+---
 
 This repository contains build scripts to build wine-lol including the required wine-lol–glibc for Arch/Manjaro (with sync to AUR) and Debian based distributions (Ubuntu, Mint, SteamOS, ...).
 
