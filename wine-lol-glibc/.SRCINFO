@@ -24,4 +24,3 @@ pkgbase = wine-lol-glibc
 	md5sums = 65e6d204ab9ad787c8dce999c4ba5c17
 
 pkgname = wine-lol-glibc
-
