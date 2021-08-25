@@ -29,7 +29,7 @@ This leads us to a few points you should consider if you want to see an updated 
 Contributer notes on building using Docker
 ---
 Simple steps to build with Docker on **any** distro and export wine:
-1. Clone master, then, in a terminal from the root directory, build it by running
+1. Clone master, then, in a terminal from the `contrib` directory, build it by running
 `docker build . -t wine-lol` (this will take a while as it's actually building).
 2. Then run the image you created a moment ago with a directory from your computer mounted as `/wine-exports` so docker can export the packages:
 `docker run -v /directory/to/export/to:/wine-exports wine-lol` (this only takes a moment because it's already built)

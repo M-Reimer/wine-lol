@@ -10,7 +10,7 @@ RUN echo 'MAKEFLAGS="-j$(expr $(nproc) \+ 1)"' >> /etc/makepkg.conf
 
 # copy source for glibc
 WORKDIR /wine-lol-glibc
-ADD wine-lol-glibc/ /wine-lol-glibc/.
+ADD ../wine-lol-glibc/ /wine-lol-glibc/.
 RUN chmod 777 -R /wine-lol-glibc
 # make our export folder
 RUN mkdir -p /glibc-builds && chmod 777 -R /glibc-builds
@@ -40,7 +40,7 @@ RUN echo 'MAKEFLAGS="-j$(expr $(nproc) \+ 1)"' >> /etc/makepkg.conf
 
 # Copy source for wine
 WORKDIR /wine-lol
-ADD wine-lol/ /wine-lol/.
+ADD ../wine-lol/ /wine-lol/.
 RUN chmod 777 -R /wine-lol
 # Make our export folder
 RUN mkdir -p /wine-builds
