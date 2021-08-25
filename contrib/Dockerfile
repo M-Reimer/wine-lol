@@ -1,3 +1,5 @@
+# Maintainer(s): github.com/wiryfuture
+
 # First we're gonna build glibc and then export it so we can proceed with wine
 #   # This lets us cache this process
 FROM archlinux:latest as glibc-builder
