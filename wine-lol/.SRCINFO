@@ -1,6 +1,6 @@
 pkgbase = wine-lol
 	pkgdesc = A compatibility layer for running Windows programs - Staging branch with League Of Legends fixes
-	pkgver = 6.10
+	pkgver = 6.15
 	pkgrel = 1
 	url = http://www.wine-staging.com
 	install = wine.install
@@ -149,13 +149,13 @@ pkgbase = wine-lol
 	optdepends = samba
 	optdepends = dosbox
 	options = staticlibs
-	source = https://dl.winehq.org/wine/source/6.x/wine-6.10.tar.xz
-	source = wine-staging-v6.10.tar.gz::https://github.com/wine-staging/wine-staging/archive/v6.10.tar.gz
+	source = https://dl.winehq.org/wine/source/6.x/wine-6.15.tar.xz
+	source = wine-staging-v6.15.tar.gz::https://github.com/wine-staging/wine-staging/archive/v6.15.tar.gz
 	source = 30-win32-aliases.conf
 	source = wine-lol-output-syscalls.patch::https://bugs.winehq.org/attachment.cgi?id=70530&action=diff&context=patch&collapsed=&headers=1&format=raw
 	source = wine-lol-bug-47198-fix.patch
-	sha512sums = f0e8f0bdab09c979772965d167d687e88998f3fd6537a592e201a2dc9097552e03b1c413516cc8c82665a8bf17580777f48bd1ed9033641f04e7ef7f0b29cc60
-	sha512sums = 9ba4fb7451f675fd9ad3e872adada708e9e7e8875f69567d9f2bef2cc8024667112538a385769eac2fd4b3c157266488458e76a1abc92d0a76109ca032103bcf
+	sha512sums = bb4420a6fb0455aaab2f45354ea470acba9feeaea07b6c2cbf8afd49a6ef97bfc794cee330ecb12fb2098994738227d149cd5685d29310bb6cd0ed25d5fdc8bf
+	sha512sums = 652e8319e4a06f64b7e4c05a139194b6b7189777632d26d79a3160447339cc5a93b42d810d8379eb7821485ccbbe8cd8e16e09e5223886027fae2f7737b8a115
 	sha512sums = 6e54ece7ec7022b3c9d94ad64bdf1017338da16c618966e8baf398e6f18f80f7b0576edf1d1da47ed77b96d577e4cbb2bb0156b0b11c183a0accf22654b0a2bb
 	sha512sums = 5441aa32244b552b1a044f87c4b935239c2df145d4b03feb92716ee6bd141c30690a496e29dffa643d4e5e292d76b16bb7dd123d4703b50b49a88a151c77ad34
 	sha512sums = b1f0096e9cdb660725aad620ac54b002979e73eeb4e36e4d0a4654a335f314399b960628cfd17f13398ffc65a6aca12d686d3e0317411af6e46283a5a5af425a
