@@ -78,6 +78,20 @@ RUN cd /packages/wine && tar -xf wine-lol-*.pkg.tar.zst
 RUN cp -r /packages/glibc/opt /binaries/glibc/.
 RUN cp -r /packages/wine/opt /binaries/wine/.
 
+# Create tarballs from binaries
+FROM archlinux:latest as tarball-packager
+WORKDIR /tarballs
+COPY --from=extract-binaries /binaries/. /binaries/.
+# Copy binaries for glibc
+RUN cp -R /binaries/glibc/opt/wine-lol /opt/wine-lol
+# Create tarball for glibc
+RUN tar cjfP wine-lol-glibc.tar.bz2 /opt/wine-lol
+# Remove glibc binaries from directory
+RUN rm -rf /opt/wine-lol
+# Copy binaries for wine
+RUN cp -R /binaries/wine/opt/wine-lol /opt/wine-lol
+RUN tar cjfP wine-lol.tar.bz2 /opt/wine-lol
+
 # Package binaries into .deb for debian and ubuntu folk
 #   # Why don't we just use the existing debian packager/
 #   #    Because Idk how to integrate it into this Dockerfile well that's why
@@ -148,6 +162,8 @@ FROM archlinux:latest as package-exporter
 WORKDIR /exports
 # Copy arch package
 COPY --from=arch-exporter /wine-lol/ /exports/.
+# Copy tarball
+COPY --from=tarball-packager /tarballs/ /exports/.
 # Copy deb package
 COPY --from=deb-packager /debian-packages/ /exports/.
 # Copy rpm package
