@@ -1,5 +1,5 @@
 Package: wine-lol
-Version: 5.6
+Version: 5.18
 Architecture: i386
 Maintainer: Manuel Reimer <mail+arch@m-reimer.de>
 Depends: wine-lol-glibc
@@ -7,4 +7,4 @@ Suggests: winetricks
 Priority: optional
 Multi-Arch: same
 Homepage: https://m-reimer.de/wine-lol
-Description: A compatibility layer for running Windows programs - Staging branch with League Of Legends fixes
+Description: A compatibility layer for running Windows programs - Wine Tk-Glitch with League Of Legends fixes

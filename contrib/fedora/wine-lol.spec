@@ -1,5 +1,5 @@
 Name: wine-lol
-Version: 5.6
+Version: 5.18
 Release: 1
 License: LGPLv2.1+
 Url: https://github.com/M-Reimer/wine-lol/tree/master

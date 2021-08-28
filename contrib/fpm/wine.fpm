@@ -1,10 +1,10 @@
 -s dir
 --name wine-lol
 --license LGPLv2.1+
---version 5.6
+--version 5.18
 --architecture x86_64
 --depends wine-lol-glibc
---description "A compatibility layer for running Windows programs - Staging branch with League Of Legends fixes"
+--description "A compatibility layer for running Windows programs - Wine Tk-Glitch with League Of Legends fixes"
 --url "https://github.com/M-Reimer/wine-lol/tree/master"
 
 /binaries/wine/opt/wine-lol=/opt/
