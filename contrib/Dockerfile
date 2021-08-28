@@ -9,13 +9,14 @@ RUN pacman -Sy --noconfirm --needed sudo base-devel
 RUN pacman -Sy --noconfirm --needed git gd lib32-gcc-libs python
 # make makepkg multithreaded
 RUN echo 'MAKEFLAGS="-j$(expr $(nproc) \+ 1)"' >> /etc/makepkg.conf
-
 # copy source for glibc
 WORKDIR /wine-lol-glibc
 ADD wine-lol-glibc/ /wine-lol-glibc/.
 RUN chmod 777 -R /wine-lol-glibc
 # make our export folder
 RUN mkdir -p /glibc-builds && chmod 777 -R /glibc-builds
+
+#   # Environment preparation is done, build glibc
 # Build glibc
 RUN sudo -u nobody bash -c 'makepkg --syncdeps'
 # Copy to build folder 
@@ -39,24 +40,118 @@ COPY --from=glibc-builder /glibc-builds/ /glibc-builds/.
 RUN pacman -U --noconfirm /glibc-builds/wine-lol-glibc-*.pkg.tar.zst
 # make makepkg multithreaded (again)
 RUN echo 'MAKEFLAGS="-j$(expr $(nproc) \+ 1)"' >> /etc/makepkg.conf
-
 # Copy source for wine
 WORKDIR /wine-lol
 ADD wine-lol/ /wine-lol/.
 RUN chmod 777 -R /wine-lol
-# Make our export folder
+# Make our export foldePreparation is done, build wine
 RUN mkdir -p /wine-builds
+
+#   # Environment preparation is done, build wine
 # Build wine
 RUN sudo -u nobody bash -c 'makepkg --syncdeps'
 # Copy wine to the build folder
 RUN cp ./wine-lol-*.pkg.tar.zst /wine-builds/.
-# Also copy glibc package?
-RUN cp /glibc-builds/wine-lol-glibc-*.pkg.tar.zst /wine-builds/.
 
-# Third stage, copy the package to a separate folder
-FROM archlinux:latest
+# Copy all arch packages to the same folder for brevity
+FROM archlinux:latest as arch-exporter
 RUN mkdir -p /wine-lol && chmod 777 -R wine-lol
 WORKDIR /wine-lol
+# Copy wine package and glibc package to export folder
 COPY --from=wine-builder /wine-builds/ /wine-lol/.
+COPY --from=glibc-builder /glibc-builds/ /wine-lol/.
+
+# Extract binaries from arch packages
+FROM archlinux:latest as extract-binaries
+WORKDIR /packages
+RUN mkdir -p /packages/wine /packages/glibc /binaries/wine /binaries/glibc
+# Copy glibc and wine packages from their builders
+COPY --from=glibc-builder /glibc-builds/ /packages/glibc/.
+COPY --from=wine-builder /wine-builds/ /packages/wine/.
+# Extract package tarfiles
+RUN cd /packages/glibc && tar -xf wine-lol-glibc-*.pkg.tar.zst
+RUN cd /packages/wine && tar -xf wine-lol-*.pkg.tar.zst
+# Copy binaries to their own folder
+#   # Folder structure should look like this
+#   # /binaries > /wine > /opt > /wine-lol > ...
+#   # /binaries > /glibc > /opt > /wine-lol > ...
+RUN cp -r /packages/glibc/opt /binaries/glibc/.
+RUN cp -r /packages/wine/opt /binaries/wine/.
+
+# Package binaries into .deb for debian and ubuntu folk
+#   # Why don't we just use the existing debian packager/
+#   #    Because Idk how to integrate it into this Dockerfile well that's why
+#   # Why don't we use fpm for debian and fedora?
+#   #    I have no idea on how long fpm will be maintained for so it's much more preferable to use the native option when possible
+FROM ubuntu:rolling as deb-packager
+WORKDIR /build_dir
+RUN mkdir -p /build_dir/wine-lol-glibc/DEBIAN /build_dir/wine-lol/DEBIAN /binaries /debian-packages
+# Copy binaries
+COPY --from=extract-binaries /binaries /binaries
+RUN cp -r /binaries/glibc/. /build_dir/wine-lol-glibc/
+RUN cp -r /binaries/wine/. /build_dir/wine-lol/
+# Copy contrib control files
+#   # Would be nice to create these on the fly from the 'official' arch .SRCINFOs
+ADD contrib/debian/glibc-control  /build_dir/wine-lol-glibc/DEBIAN/control
+ADD contrib/debian/wine-control /build_dir/wine-lol/DEBIAN/control
+# Package binaries
+RUN dpkg-deb --build --root-owner-group /build_dir/wine-lol-glibc
+RUN dpkg-deb --build --root-owner-group /build_dir/wine-lol
+# Move binaries to export folder and we're done!
+RUN cp /build_dir/*.deb /debian-packages/.
+
+#    # Making packages 'natively' with rpmbuild isn't very intuitive.
+#    # I'm going to leave this in for now because I'm planning on getting this to work instead of fpm.
+#    # However, for the time being, fpm will do the building for RPMs/fedora
+
+# Package binaries into .rpm for fedora folk
+#FROM fedora:latest as rpm-packager
+# Install packaging dependencies
+#RUN dnf install gcc gcc-c++ make automake autoconf rpm-build -y
+#WORKDIR /build_dir
+#RUN mkdir -p /build_dir/wine-lol /build_dir/wine-lol-glibc
+# Create dir structs
+#RUN cd /build_dir/wine-lol && mkdir BUILD RPMS SOURCES SPECS SRPMS
+#RUN cd /build_dir/wine-lol-glibc && mkdir BUILD RPMS SOURCES SPECS SRPMS
+# Copy binaries over 
+#RUN mkdir -p /binaries/wine /binaries/glibc
+#COPY --from=extract-binaries /binaries/ /binaries/.
+#ADD contrib/fedora/wine-lol-glibc.spec /build_dir/glibc/SPECS/.
+#ADD contrib/fedora/wine-lol.spec /build_dir/wine/SPECS/.
+# Build packages
+#RUN cd /build_dir/wine-lol-glibc && rpmbuild -v -bb 
+#RUN ls /build_dir/wine-lol-glibc/RPMS/
+
+# Temporary fpm packager for RPM packages
+#   # Using rpmbuild would be nice.
+FROM fedora:latest as rpm-packager
+# Install packaging dependencies
+RUN dnf install -y ruby-devel gcc gcc-c++ make automake autoconf rpm-build squashfs-tools && gem install fpm
+# Copy binaries over
+WORKDIR /build_dir
+RUN mkdir -p /binaries/wine /binaries/glibc
+COPY --from=extract-binaries /binaries/ /binaries/.
+# Create glibc dir, copy fpm file and build
+RUN mkdir -p /build_dir/glibc
+ADD contrib/fpm/glibc.fpm /build_dir/glibc/.fpm
+RUN cd /build_dir/glibc && fpm -t rpm
+# Rinse and repeat for wine
+RUN mkdir -p /build_dir/wine
+ADD contrib/fpm/wine.fpm /build_dir/wine/.fpm
+RUN cd /build_dir/wine && fpm -t rpm
+# Copy files to export folder
+RUN mkdir -p /rpm-packages
+RUN cp -r /build_dir/*/*.rpm /rpm-packages/.
+
+# Export all packages to the exporter? Why? So the CMD line can actually export eveything that's why
+FROM archlinux:latest as package-exporter
+WORKDIR /exports
+# Copy arch package
+COPY --from=arch-exporter /wine-lol/ /exports/.
+# Copy deb package
+COPY --from=deb-packager /debian-packages/ /exports/.
+# Copy rpm package
+COPY --from=rpm-packager /rpm-packages/ /exports/.
+
 # Lastly, the magic command, where we export our built wine package to the mounted directory
-CMD "cp" "-r" "/wine-lol/." "/wine-exports/."
+CMD "cp" "-r" "/exports/." "/wine-exports/."
