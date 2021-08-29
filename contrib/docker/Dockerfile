@@ -106,8 +106,8 @@ RUN cp -r /binaries/glibc/. /build_dir/wine-lol-glibc/
 RUN cp -r /binaries/wine/. /build_dir/wine-lol/
 # Copy contrib control files
 #   # Would be nice to create these on the fly from the 'official' arch .SRCINFOs
-ADD contrib/debian/glibc-control  /build_dir/wine-lol-glibc/DEBIAN/control
-ADD contrib/debian/wine-control /build_dir/wine-lol/DEBIAN/control
+ADD contrib/docker/debian/glibc-control  /build_dir/wine-lol-glibc/DEBIAN/control
+ADD contrib/docker/debian/wine-control /build_dir/wine-lol/DEBIAN/control
 # Package binaries
 RUN dpkg-deb --build --root-owner-group /build_dir/wine-lol-glibc
 RUN dpkg-deb --build --root-owner-group /build_dir/wine-lol
@@ -130,8 +130,8 @@ RUN cp /build_dir/*.deb /debian-packages/.
 # Copy binaries over 
 #RUN mkdir -p /binaries/wine /binaries/glibc
 #COPY --from=extract-binaries /binaries/ /binaries/.
-#ADD contrib/fedora/wine-lol-glibc.spec /build_dir/glibc/SPECS/.
-#ADD contrib/fedora/wine-lol.spec /build_dir/wine/SPECS/.
+#ADD contrib/docker/fedora/wine-lol-glibc.spec /build_dir/glibc/SPECS/.
+#ADD contrib/docker/fedora/wine-lol.spec /build_dir/wine/SPECS/.
 # Build packages
 #RUN cd /build_dir/wine-lol-glibc && rpmbuild -v -bb 
 #RUN ls /build_dir/wine-lol-glibc/RPMS/
@@ -147,11 +147,11 @@ RUN mkdir -p /binaries/wine /binaries/glibc
 COPY --from=extract-binaries /binaries/ /binaries/.
 # Create glibc dir, copy fpm file and build
 RUN mkdir -p /build_dir/glibc
-ADD contrib/fpm/glibc.fpm /build_dir/glibc/.fpm
+ADD contrib/docker/fpm/glibc.fpm /build_dir/glibc/.fpm
 RUN cd /build_dir/glibc && fpm -t rpm
 # Rinse and repeat for wine
 RUN mkdir -p /build_dir/wine
-ADD contrib/fpm/wine.fpm /build_dir/wine/.fpm
+ADD contrib/docker/fpm/wine.fpm /build_dir/wine/.fpm
 RUN cd /build_dir/wine && fpm -t rpm
 # Copy files to export folder
 RUN mkdir -p /rpm-packages
