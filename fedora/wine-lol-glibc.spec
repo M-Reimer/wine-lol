@@ -1,4 +1,5 @@
 %define _build_id_links none
+%define _binary_payload w7.xzdio
 
 Name: wine-lol-glibc
 Version: 2.33
