@@ -8,7 +8,7 @@ Summary: GNU C Library patched for wine-lol
 License: LGPLv2.1+
 Url: https://www.gnu.org/software/libc
 BuildArch: x86_64
-Requires: (linux-api-headers>=4.10) tzdata filesystem
+Requires: (kernel-headers>=4.10) tzdata filesystem
 
 %description
 GNU C Library patched for wine-lol
