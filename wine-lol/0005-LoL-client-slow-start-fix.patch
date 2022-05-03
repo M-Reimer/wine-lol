@@ -1,0 +1,34 @@
+diff --git a/dlls/ws2_32/socket.c b/dlls/ws2_32/socket.c
+index 5089029f4b4..8731c92e2e6 100644
+--- a/dlls/ws2_32/socket.c
++++ b/dlls/ws2_32/socket.c
+@@ -4788,6 +4788,11 @@ INT WINAPI WSAIoctl(SOCKET s, DWORD code, LPVOID in_buff, DWORD in_size, LPVOID
+         break;
+     }
+ 
++    case WS_SIO_IDEAL_SEND_BACKLOG_QUERY: // LoL hack
++        if (ret_size) *ret_size = 0;
++        if (out_buff && out_size == sizeof(DWORD)) *(DWORD*)out_buff = 0;
++        return SOCKET_ERROR;
++
+     case WS_SIOCATMARK:
+     {
+         unsigned int oob = 0, atmark = 0;
+@@ -5518,6 +5523,17 @@ int WINAPI WS_select(int nfds, WS_fd_set *ws_readfds,
+     TRACE("read %p, write %p, excp %p timeout %p\n",
+           ws_readfds, ws_writefds, ws_exceptfds, ws_timeout);
+ 
++    static int is_RCS = -1; // LoL hack
++    if (is_RCS < 0) {
++        is_RCS = GetModuleHandleA(NULL) == GetModuleHandleA("RiotClientServices.exe");
++    }
++    const struct WS_timeval zero_tv = { 0, 1000 };
++    if (is_RCS && ws_readfds && ws_writefds && ws_exceptfds && ws_timeout && ws_timeout->tv_sec == 1 && ws_timeout->tv_usec == 0) {
++        if (ws_readfds->fd_count == 8 && ws_writefds->fd_count == 0  && ws_exceptfds->fd_count == 1) {
++            ws_timeout = &zero_tv;
++        }
++    }
++
+     if (!(pollfds = fd_sets_to_poll( ws_readfds, ws_writefds, ws_exceptfds, &count )))
+         return SOCKET_ERROR;
+ 
