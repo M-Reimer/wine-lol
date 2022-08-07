@@ -13,7 +13,6 @@ Short overview about this repository:
 
 - **wine-lol** contains the PKGBUILD of wine-lol itself
 - **wine-lol-bin** contains a PKGBUILD which repackages GloriousEggroll's official binaries
-- **repo-make.conf** allows to autobuild the packages on a dedicated build VM
 - **pkg.sh** Small helper I use for handling "git subtree" for AUR
 
 Contributor notes about Wine version updates
