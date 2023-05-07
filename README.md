@@ -1,7 +1,7 @@
 Wine-LoL
 ========
 
-This repository contains build scripts to build wine-lol for Arch/Manjaro (with sync to AUR). These PKGBUILDs build the wine version created by [GloriousEggroll](https://github.com/GloriousEggroll).
+This repository contains build scripts to build wine-lol for [Arch Linux](https://archlinux.org/) (with sync to [AUR](https://aur.archlinux.org/)). These PKGBUILDs build the wine version created by [GloriousEggroll](https://github.com/GloriousEggroll).
 
 You can find the source project here: https://github.com/GloriousEggroll/wine-ge-custom/
 
