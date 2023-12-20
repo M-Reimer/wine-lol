@@ -3,7 +3,7 @@ Wine-LoL
 
 This repository contains build scripts to build wine-lol for [Arch Linux](https://archlinux.org/) (with sync to [AUR](https://aur.archlinux.org/)). These PKGBUILDs build or repackage the [LoL wine version created by GloriousEggroll](https://github.com/GloriousEggroll/wine-ge-custom/). If you are no Arch user, please get the [builds from GloriousEggroll](https://github.com/GloriousEggroll/wine-ge-custom/releases?q=-LoL&expanded=true) directly.
 
-All the PKGBUILDs do is help maintaining the LoL wine version on a central location. If you use it directly, you'll find the "wine executable" at the path `/opt/wine-lol/bin/wine-lol`. But most users probably want to use a helper tool like [leagueoflegends-git](https://aur.archlinux.org/packages/leagueoflegends-git).
+All the PKGBUILDs do is help maintaining the LoL wine version on a central location. If you use it directly, you'll find the "wine executable" at the path `/opt/wine-lol/bin/wine`. But most users probably want to use a helper tool like [leagueoflegends-git](https://aur.archlinux.org/packages/leagueoflegends-git).
 
 **NOTE**: Wine is a huge project. Depending on your system performance, you can expect *up to one hour of build time or even longer*. If you don't want to wait that long, please use the **wine-lol-bin** PKGBUILD which will just repackage the prebuilt version from GloriousEggroll and so is considerably faster!
 
