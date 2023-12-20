@@ -5,6 +5,8 @@ This repository contains build scripts to build wine-lol for [Arch Linux](https:
 
 All the PKGBUILDs do is help maintaining the LoL wine version on a central location. If you use it directly, you'll find the "wine executable" at the path `/opt/wine-lol/bin/wine-lol`. But most users probably want to use a helper tool like [leagueoflegends-git](https://aur.archlinux.org/packages/leagueoflegends-git).
 
+**NOTE**: Wine is a huge project. Depending on your system performance, you can expect *up to one hour of build time or even longer*. If you don't want to wait that long, please use the **wine-lol-bin** PKGBUILD which will just repackage the prebuilt version from GloriousEggroll and so is considerably faster!
+
 **WARNING**: While in the past the Linux community received some help from Riot employees in cases where the in-game anti cheat caused the game to break on Linux with Wine, this is not guaranteed to keep this way. Especially as Riot plans to create some [kernel driver based anti cheat](https://eune.leagueoflegends.com/en-pl/news/dev/dev-null-anti-cheat-kernel-driver/) which may land in LoL at some time. So far noone knows for sure if LoL will still work with Wine as soon as this happens. So if you are playing on Linux, it is strongly recommended to not spend any money on skins or other in-game items! Your money will be lost as soon as Wine support breaks.
 
 Short overview about this repository:
