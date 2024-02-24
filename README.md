@@ -1,5 +1,5 @@
-IMPORTANT NOTE
-==============
+IMPORTANT NOTICE
+================
 
 Riot plans to add Vanguard, a hightly intrusive always running kernel level anti cheat, to LoL [within just a few patches](https://www.leagueoflegends.com/en-us/news/game-updates/patch-14-4-notes/#patch-vanguard). If you haven't started to play LoL by now, and you plan to play exclusively on Linux, then you shouldn't waste time into this game and better give [Dota 2](https://www.dota2.com/) a chance. Another option for the future may be [SMITE 2](https://www.smite2.com/) which will be in early alpha in Spring 2024. SMITE 2 will officially support the SteamDeck and so likely runs on any Linux system. If you already played LoL a lot, and search for some solution to play without Windows, then you may check out GeForce NOW to stream the game.
 
